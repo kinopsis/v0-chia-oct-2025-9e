@@ -5,8 +5,10 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "dev:setup": "node scripts/setup-database.js && next dev",
     "lint": "eslint .",
-    "start": "next start"
+    "start": "next start",
+    "db:setup": "node scripts/setup-database.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

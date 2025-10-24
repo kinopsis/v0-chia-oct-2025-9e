@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 interface AuditLog {
   id: number
-  user_email: string
+  user_email: string | null
   action: string
   table_name: string
   record_id: string | null
@@ -30,7 +30,7 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
 
   const filteredLogs = logs.filter(
     (log) =>
-      log.user_email.toLowerCase().includes(search.toLowerCase()) ||
+      (log.user_email?.toLowerCase() || '').includes(search.toLowerCase()) ||
       log.action.toLowerCase().includes(search.toLowerCase()) ||
       log.table_name.toLowerCase().includes(search.toLowerCase()),
   )
@@ -97,7 +97,7 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
             {paginatedLogs.map((log) => (
               <TableRow key={log.id}>
                 <TableCell className="text-sm">{formatDate(log.created_at)}</TableCell>
-                <TableCell className="text-sm font-medium">{log.user_email}</TableCell>
+                <TableCell className="text-sm font-medium">{log.user_email || 'Sistema'}</TableCell>
                 <TableCell>
                   <Badge variant={getActionBadgeVariant(log.action)}>{log.action}</Badge>
                 </TableCell>
@@ -117,7 +117,7 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
                       <div className="space-y-4">
                         <div>
                           <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Usuario:</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{log.user_email}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{log.user_email || 'Sistema'}</p>
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Acción:</p>
