@@ -14,14 +14,64 @@ export async function POST(request: Request) {
 
     const tramiteData = await request.json()
 
+    // Prepare data for insertion, handling both old and new dependency fields
+    const insertData: any = {
+      nombre_tramite: tramiteData.nombre_tramite,
+      descripcion: tramiteData.descripcion,
+      categoria: tramiteData.categoria,
+      modalidad: tramiteData.modalidad,
+      formulario: tramiteData.formulario || "",
+      requiere_pago: tramiteData.requiere_pago,
+      tiempo_respuesta: tramiteData.tiempo_respuesta,
+      requisitos: tramiteData.requisitos,
+      instrucciones: tramiteData.instrucciones,
+      url_suit: tramiteData.url_suit || "",
+      url_gov: tramiteData.url_gov || "",
+      is_active: true,
+      created_by: user.id,
+      updated_by: user.id,
+    }
+
+    // Handle new dependency structure
+    if (tramiteData.dependencia_id) {
+      insertData.dependencia_id = parseInt(tramiteData.dependencia_id);
+    }
+    if (tramiteData.subdependencia_id) {
+      insertData.subdependencia_id = parseInt(tramiteData.subdependencia_id);
+    }
+
+    // Handle legacy dependency fields (for backward compatibility during transition)
+    if (tramiteData.dependencia_nombre && !tramiteData.dependencia_id) {
+      // Find or create dependency by name (legacy support)
+      const { data: existingDep } = await supabase
+        .from("dependencias")
+        .select("id")
+        .ilike("nombre", tramiteData.dependencia_nombre)
+        .eq("tipo", "dependencia")
+        .single();
+
+      if (existingDep) {
+        insertData.dependencia_id = existingDep.id;
+      }
+    }
+
+    if (tramiteData.subdependencia_nombre && !tramiteData.subdependencia_id) {
+      // Find or create subdependency by name (legacy support)
+      const { data: existingSubDep } = await supabase
+        .from("dependencias")
+        .select("id")
+        .ilike("nombre", tramiteData.subdependencia_nombre)
+        .eq("tipo", "subdependencia")
+        .single();
+
+      if (existingSubDep) {
+        insertData.subdependencia_id = existingSubDep.id;
+      }
+    }
+
     const { data, error } = await supabase
       .from("tramites")
-      .insert({
-        ...tramiteData,
-        is_active: true,
-        created_by: user.id,
-        updated_by: user.id,
-      })
+      .insert(insertData)
       .select()
       .single()
 

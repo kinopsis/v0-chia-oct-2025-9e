@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2 } from "lucide-react"
 import Link from "next/link"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { DependencyPairSelector } from "@/components/admin/dependency-selector"
 
 const CATEGORIAS = [
   "Vivienda",
@@ -29,6 +30,8 @@ export default function NuevoTramitePage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [dependenciaId, setDependenciaId] = useState<number | null>(null)
+  const [subdependenciaId, setSubdependenciaId] = useState<number | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -37,6 +40,14 @@ export default function NuevoTramitePage() {
 
     const formData = new FormData(e.currentTarget)
     const data = Object.fromEntries(formData)
+
+    // Add dependency IDs to the form data
+    if (dependenciaId) {
+      (data as any).dependencia_id = dependenciaId
+    }
+    if (subdependenciaId) {
+      (data as any).subdependencia_id = subdependenciaId
+    }
 
     try {
       const response = await fetch("/api/admin/tramites/create", {
@@ -124,16 +135,17 @@ export default function NuevoTramitePage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="dependencia_nombre">Dependencia *</Label>
-                  <Input id="dependencia_nombre" name="dependencia_nombre" required />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="subdependencia_nombre">Subdependencia</Label>
-                  <Input id="subdependencia_nombre" name="subdependencia_nombre" />
-                </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Dependencia *
+                </label>
+                <DependencyPairSelector
+                  dependenciaId={dependenciaId}
+                  subdependenciaId={subdependenciaId}
+                  onDependenciaChange={setDependenciaId}
+                  onSubdependenciaChange={setSubdependenciaId}
+                  required
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">

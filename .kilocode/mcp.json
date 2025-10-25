@@ -41,7 +41,31 @@
       },
       "disabled": false,
       "alwaysAllow": [
-        "search_repositories"
+        "search_repositories",
+        "create_or_update_file",
+        "create_repository",
+        "push_files",
+        "get_file_contents",
+        "create_issue",
+        "create_pull_request",
+        "create_branch",
+        "list_commits",
+        "list_pull_requests",
+        "get_pull_request",
+        "get_pull_request_reviews",
+        "get_pull_request_comments",
+        "list_issues",
+        "update_issue",
+        "search_issues",
+        "search_code",
+        "create_pull_request_review",
+        "merge_pull_request",
+        "get_pull_request_status",
+        "update_pull_request_branch",
+        "get_issue",
+        "get_pull_request_files",
+        "search_users",
+        "add_issue_comment"
       ]
     }
   }

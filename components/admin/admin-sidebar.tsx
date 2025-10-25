@@ -14,6 +14,7 @@ interface AdminSidebarProps {
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Trámites", href: "/admin/tramites", icon: FileText },
+  { name: "Dependencias", href: "/admin/dependencias", icon: Building2 },
   { name: "Usuarios", href: "/admin/usuarios", icon: Users, adminOnly: true },
   { name: "Auditoría", href: "/admin/auditoria", icon: History, adminOnly: true },
   { name: "Configuración", href: "/admin/configuracion", icon: Settings, adminOnly: true },
