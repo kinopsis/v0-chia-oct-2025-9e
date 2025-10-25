@@ -29,6 +29,20 @@
         "get_anon_key",
         "list_edge_functions"
       ]
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "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"
+      },
+      "disabled": false,
+      "alwaysAllow": [
+        "search_repositories"
+      ]
     }
   }
 }
