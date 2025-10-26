@@ -14,6 +14,26 @@ export async function POST(request: Request) {
 
     const tramiteData = await request.json()
 
+    // Validate requiere_pago field - debe ser "Sí" o "No" (no valores detallados)
+    if (tramiteData.requiere_pago !== "Sí" && tramiteData.requiere_pago !== "No") {
+      return NextResponse.json({
+        error: "El campo 'requiere_pago' debe contener 'Sí' o 'No'. La información detallada del pago debe ir en el campo correspondiente."
+      }, { status: 400 })
+    }
+
+    // Validate relationship between requiere_pago and informacion_pago
+    if (tramiteData.requiere_pago === "Sí" && (!tramiteData.informacion_pago || !tramiteData.informacion_pago.trim())) {
+      return NextResponse.json({
+        error: "Cuando 'requiere_pago' es 'Sí', el campo 'informacion_pago' es requerido"
+      }, { status: 400 })
+    }
+
+    if (tramiteData.requiere_pago === "No" && tramiteData.informacion_pago && tramiteData.informacion_pago.trim()) {
+      return NextResponse.json({
+        error: "Cuando 'requiere_pago' es 'No', el campo 'informacion_pago' debe estar vacío"
+      }, { status: 400 })
+    }
+
     // Prepare data for insertion, handling both old and new dependency fields
     const insertData: any = {
       nombre_tramite: tramiteData.nombre_tramite,
@@ -30,6 +50,11 @@ export async function POST(request: Request) {
       is_active: true,
       created_by: user.id,
       updated_by: user.id,
+    }
+
+    // Handle informacion_pago field if provided
+    if (tramiteData.informacion_pago !== undefined) {
+      insertData.informacion_pago = tramiteData.informacion_pago?.trim() || null
     }
 
     // Handle new dependency structure

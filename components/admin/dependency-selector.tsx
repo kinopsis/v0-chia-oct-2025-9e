@@ -231,6 +231,13 @@ export function DependencyPairSelector({
 }: DependencyPairSelectorProps) {
   const [subdependencies, setSubdependencies] = useState<Dependencia[]>([]);
 
+  // Efecto inicial para cargar subdependencias cuando ya hay una dependencia seleccionada
+  useEffect(() => {
+    if (dependenciaId) {
+      fetchSubdependencies(dependenciaId);
+    }
+  }, []);
+
   useEffect(() => {
     if (dependenciaId) {
       fetchSubdependencies(dependenciaId);
@@ -240,25 +247,56 @@ export function DependencyPairSelector({
     }
   }, [dependenciaId]);
 
+  useEffect(() => {
+    // Validar que la subdependencia seleccionada pertenezca a la dependencia actual
+    if (dependenciaId && subdependenciaId && subdependencies.length > 0) {
+      const isValidSubdependency = subdependencies.some((dep: Dependencia) => dep.id === subdependenciaId)
+      if (!isValidSubdependency) {
+        // La subdependencia no pertenece a esta dependencia, limpiarla
+        onSubdependenciaChange(null)
+      }
+    } else if (dependenciaId && subdependenciaId && subdependencies.length === 0) {
+      // Las subdependencias aún no se han cargado, no hacer nada
+    } else if (!dependenciaId && subdependenciaId) {
+      // No hay dependencia pero hay subdependencia, limpiarla
+      onSubdependenciaChange(null);
+    }
+  }, [dependenciaId, subdependenciaId, subdependencies]);
+
   const fetchSubdependencies = async (parentId: number) => {
     try {
       const response = await fetch(`/api/admin/dependencias/${parentId}/hijos?is_active=true`);
       const data = await response.json();
       
       if (response.ok) {
-        setSubdependencies(data.data || []);
+        const subdeps = data.data || [];
+        setSubdependencies(subdeps);
+        
+        // Si hay una subdependencia previamente seleccionada, validar que esté en la nueva lista
+        if (subdependenciaId) {
+          const isValidSubdependency = subdeps.some((dep: Dependencia) => dep.id === subdependenciaId);
+          if (!isValidSubdependency) {
+            onSubdependenciaChange(null);
+          }
+        }
       } else {
         console.error('Error fetching subdependencies:', data.error);
         setSubdependencies([]);
+        if (subdependenciaId) {
+          onSubdependenciaChange(null);
+        }
       }
     } catch (error) {
       console.error('Error fetching subdependencies:', error);
       setSubdependencies([]);
+      if (subdependenciaId) {
+        onSubdependenciaChange(null);
+      }
     }
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <DependencySelector
         value={dependenciaId}
         onChange={onDependenciaChange}

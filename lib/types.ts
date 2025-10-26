@@ -7,6 +7,8 @@ export interface Procedure {
   formulario: string
   dependencia_nombre: string
   subdependencia_nombre: string
+  dependencia_id?: number
+  subdependencia_id?: number
   requiere_pago: string
   tiempo_respuesta: string
   requisitos: string

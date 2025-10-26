@@ -100,7 +100,9 @@ export function ProcedureModal({ procedure, onClose }: ProcedureModalProps) {
               <Building2 className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
               <div>
                 <p className="font-medium text-sm">Dependencia</p>
-                <p className="text-sm text-muted-foreground">{procedure.dependencia_nombre}</p>
+                <p className="text-sm text-muted-foreground">
+                  {procedure.dependencia_nombre || 'No especificada'}
+                </p>
                 {procedure.subdependencia_nombre && (
                   <p className="text-xs text-muted-foreground">{procedure.subdependencia_nombre}</p>
                 )}

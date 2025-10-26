@@ -32,6 +32,8 @@ export default function NuevoTramitePage() {
   const [error, setError] = useState<string | null>(null)
   const [dependenciaId, setDependenciaId] = useState<number | null>(null)
   const [subdependenciaId, setSubdependenciaId] = useState<number | null>(null)
+  const [esPago, setEsPago] = useState<boolean>(false)
+  const [informacionPago, setInformacionPago] = useState<string>("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -47,6 +49,28 @@ export default function NuevoTramitePage() {
     }
     if (subdependenciaId) {
       (data as any).subdependencia_id = subdependenciaId
+    }
+
+    // Validar selección de radio buttons
+    if (esPago !== true && esPago !== false) {
+      setError("Debe seleccionar 'Sí' o 'No' para el campo 'requiere_pago'")
+      setLoading(false)
+      return
+    }
+
+    // Validar información de pago si requiere pago
+    if (esPago && (!informacionPago || !informacionPago.trim())) {
+      setError("La información del pago es requerida cuando el trámite requiere pago")
+      setLoading(false)
+      return
+    }
+
+    // Asegurar que el valor de requiere_pago sea el correcto
+    (data as any).requiere_pago = esPago ? "Sí" : "No"
+    
+    // Si requiere pago, también enviar la información detallada en su campo correspondiente
+    if (esPago && informacionPago.trim()) {
+      (data as any).informacion_pago = informacionPago.trim()
     }
 
     try {
@@ -103,7 +127,7 @@ export default function NuevoTramitePage() {
                 <Textarea id="descripcion" name="descripcion" rows={4} required />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="categoria">Categoría *</Label>
                   <Select name="categoria" required>
@@ -150,16 +174,36 @@ export default function NuevoTramitePage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="requiere_pago">Requiere Pago *</Label>
-                  <Select name="requiere_pago" required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Sí">Sí</SelectItem>
-                      <SelectItem value="No">No</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label>Requiere Pago *</Label>
+                  <div className="flex gap-6">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="requiere_pago_opcion"
+                        value="Sí"
+                        checked={esPago}
+                        onChange={(e) => {
+                          setEsPago(true);
+                        }}
+                        className="mr-2"
+                      />
+                      <span>Sí</span>
+                    </label>
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="requiere_pago_opcion"
+                        value="No"
+                        checked={!esPago}
+                        onChange={(e) => {
+                          setEsPago(false);
+                          setInformacionPago(""); // Limpiar información de pago
+                        }}
+                        className="mr-2"
+                      />
+                      <span>No</span>
+                    </label>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -168,9 +212,38 @@ export default function NuevoTramitePage() {
                 </div>
               </div>
 
+               {esPago && (
+                 <div className="space-y-2">
+                   <Label htmlFor="informacion_pago">Información del Pago *</Label>
+                   <Textarea
+                     id="informacion_pago"
+                     name="informacion_pago"
+                     value={informacionPago}
+                     onChange={(e) => setInformacionPago(e.target.value)}
+                     placeholder="Ingrese la información del pago (ej: $50.000, 0.2 UVT, Variable según caso)"
+                     rows={3}
+                     className="font-mono text-sm"
+                     required
+                   />
+                   <p className="text-sm text-gray-600">
+                     Esta información detallada del pago se guardará por separado del campo "requiere_pago"
+                   </p>
+                 </div>
+               )}
+
               <div className="space-y-2">
                 <Label htmlFor="requisitos">Requisitos *</Label>
                 <Textarea id="requisitos" name="requisitos" rows={3} required />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="formulario">Formulario</Label>
+                <Textarea
+                  id="formulario"
+                  name="formulario"
+                  rows={3}
+                  placeholder="Describe el formulario necesario para este trámite o deja en blanco si no aplica"
+                />
               </div>
 
               <div className="space-y-2">

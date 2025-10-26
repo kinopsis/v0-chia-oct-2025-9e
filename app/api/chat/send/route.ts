@@ -34,7 +34,8 @@ export async function POST(request: Request) {
 
     // Send to N8n webhook
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), config.timeout_seconds * 1000)
+    const timeoutMs = Math.min(config.timeout_seconds * 1000, 60000) // Max 60s
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
 
     let lastError: Error | null = null
     let response: Response | null = null

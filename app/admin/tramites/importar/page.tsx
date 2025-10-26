@@ -67,7 +67,7 @@ export default function ImportarTramitesPage() {
           <CardTitle>Seleccionar Archivo CSV</CardTitle>
           <CardDescription>
             El archivo debe tener las columnas: id, nombre_tramite, descripcion, categoria, modalidad, formulario,
-            dependencia_nombre, subdependencia_nombre, requiere_pago, tiempo_respuesta, requisitos, instrucciones,
+            dependencia (nombre o ID), subdependencia (nombre o ID), requiere_pago, tiempo_respuesta, requisitos, instrucciones,
             url_suit, url_gov
           </CardDescription>
         </CardHeader>

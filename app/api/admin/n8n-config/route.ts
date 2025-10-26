@@ -21,21 +21,31 @@ export async function POST(request: Request) {
 
     const configData = await request.json()
 
-    const { data: existingConfig } = await supabase.from("n8n_config").select("id").limit(1).maybeSingle()
+    // Siempre intentar actualizar primero el registro más reciente
+    const { data: latestConfig } = await supabase
+      .from("n8n_config")
+      .select("id")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single()
 
+    console.log("[v0-config] latestConfig:", latestConfig)
+    
     let result
 
-    if (existingConfig) {
-      // Update existing config
+    if (latestConfig && latestConfig.id) {
+      // Update existing config (preferido)
+      console.log("[v0-config] Updating existing config with id:", latestConfig.id)
       result = await supabase
         .from("n8n_config")
         .update({
           ...configData,
           updated_by: user.id,
         })
-        .eq("id", existingConfig.id)
+        .eq("id", latestConfig.id)
     } else {
-      // Insert new config
+      // Insert as a fallback (should not happen if records exist)
+      console.log("[v0-config] Inserting new config (fallback)")
       result = await supabase.from("n8n_config").insert({
         ...configData,
         created_by: user.id,
@@ -43,10 +53,14 @@ export async function POST(request: Request) {
       })
     }
 
-    if (result.error) throw result.error
+    if (result.error) {
+      console.error("[v0-config] Error saving n8n config:", result.error)
+      return NextResponse.json({ error: result.error.message || "Database error" }, { status: 500 })
+    }
 
     return NextResponse.json({ success: true })
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[v0-config] Exception in n8n config save:", error)
+    return NextResponse.json({ error: error.message || "Server error" }, { status: 500 })
   }
 }

@@ -11,8 +11,44 @@ export default async function TramitesPage() {
 
   const { data: tramites, error } = await supabase
     .from("tramites")
-    .select("*")
+    .select(`
+      id,
+      nombre_tramite,
+      descripcion,
+      categoria,
+      dependencia_id,
+      subdependencia_id,
+      modalidad,
+      requiere_pago,
+      requisitos,
+      is_active,
+      created_at
+    `)
     .order("created_at", { ascending: false })
+
+  // Fetch dependencias separately to avoid relationship conflicts
+  const { data: dependencias } = await supabase
+    .from("dependencias")
+    .select("id, nombre")
+    .in("tipo", ["dependencia", "subdependencia"])
+
+  const dependenciasMap = new Map()
+  if (dependencias) {
+    for (const dep of dependencias) {
+      dependenciasMap.set(dep.id, dep.nombre)
+    }
+  }
+
+  if (error) {
+    console.error("Error fetching tramites:", error)
+  }
+
+  // Transform data to include dependencia_nombre and subdependencia_nombre
+  const transformedTramites = (tramites || []).map(tramite => ({
+    ...tramite,
+    dependencia_nombre: tramite.dependencia_id ? dependenciasMap.get(tramite.dependencia_id) || "" : "",
+    subdependencia_nombre: tramite.subdependencia_id ? dependenciasMap.get(tramite.subdependencia_id) || "" : ""
+  }))
 
   const canEdit = user?.profile?.role === "admin" || user?.profile?.role === "supervisor"
 
@@ -48,7 +84,7 @@ export default async function TramitesPage() {
         )}
       </div>
 
-      <TramitesTable tramites={tramites || []} canEdit={canEdit} />
+      <TramitesTable tramites={transformedTramites} canEdit={canEdit} />
     </div>
   )
 }

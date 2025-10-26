@@ -40,7 +40,7 @@ export function N8nConfigForm({ initialConfig }: N8nConfigFormProps) {
       webhook_url: "",
       api_key: "",
       is_active: false,
-      timeout_seconds: 30,
+      timeout_seconds: 60,
       max_retries: 3,
       custom_prompts: {
         system_prompt:
@@ -67,7 +67,7 @@ export function N8nConfigForm({ initialConfig }: N8nConfigFormProps) {
         router.refresh()
       } else {
         const data = await response.json()
-        setMessage({ type: "error", text: data.error || "Error al guardar configuración" })
+        setMessage({ type: "error", text: data.error || "Error al guardar configuración. Verifique los campos e intente de nuevo." })
       }
     } catch (error) {
       setMessage({ type: "error", text: "Error al guardar configuración" })
@@ -158,10 +158,13 @@ export function N8nConfigForm({ initialConfig }: N8nConfigFormProps) {
               id="timeout_seconds"
               type="number"
               min="5"
-              max="120"
+              max="60"
               value={config.timeout_seconds}
               onChange={(e) => setConfig({ ...config, timeout_seconds: Number.parseInt(e.target.value) })}
             />
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Tiempo máximo de espera para respuesta del webhook (5-60 segundos)
+            </p>
           </div>
 
           <div className="space-y-2">

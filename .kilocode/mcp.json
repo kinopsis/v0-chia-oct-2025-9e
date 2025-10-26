@@ -1,35 +1,5 @@
 {
   "mcpServers": {
-    "supabase": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@supabase/mcp-server-supabase@0.5.5",
-        "--access-token",
-        "sbp_95b9ce61482adcaeffafc5774ce15583125bbbff"
-      ],
-      "alwaysAllow": [
-        "search_docs",
-        "list_organizations",
-        "get_organization",
-        "list_tables",
-        "list_extensions",
-        "list_projects",
-        "get_project",
-        "get_cost",
-        "confirm_cost",
-        "execute_sql",
-        "get_logs",
-        "list_migrations",
-        "apply_migration",
-        "get_advisors",
-        "get_project_url",
-        "generate_typescript_types",
-        "get_edge_function",
-        "get_anon_key",
-        "list_edge_functions"
-      ]
-    },
     "github": {
       "command": "npx",
       "args": [
@@ -67,6 +37,35 @@
         "search_users",
         "add_issue_comment"
       ]
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@0.5.5",
+        "--access-token",
+        "sbp_95b9ce61482adcaeffafc5774ce15583125bbbff"
+      ],
+      "alwaysAllow": [
+        "search_docs",
+        "list_organizations",
+        "get_organization",
+        "list_projects",
+        "get_project",
+        "list_tables",
+        "execute_sql",
+        "get_logs",
+        "list_migrations",
+        "apply_migration",
+        "get_project_url",
+        "get_anon_key",
+        "generate_typescript_types",
+        "get_advisors",
+        "list_extensions",
+        "restore_project",
+        "pause_project"
+      ],
+      "disabled": false
     }
   }
 }
