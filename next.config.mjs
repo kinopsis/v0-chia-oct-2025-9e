@@ -85,10 +85,7 @@ const nextConfig = {
     ignoreBuildErrors: process.env.NODE_ENV !== 'production',
   },
 
-  // ESLint
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // ESLint - Removed as it's no longer supported in Next.js 16+
 
   // Redirects for SEO
   async redirects() {
