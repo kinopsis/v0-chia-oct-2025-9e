@@ -19,7 +19,7 @@ interface Tramite {
   nombre_tramite: string
   descripcion: string
   categoria: string
-  dependencia_nombre?: string
+  dependencia_nombre: string
   subdependencia_nombre?: string
   dependencia_id?: number
   subdependencia_id?: number
