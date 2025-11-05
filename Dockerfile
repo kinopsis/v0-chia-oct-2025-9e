@@ -5,7 +5,7 @@ FROM node:20-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+RUN npm install -g pnpm && pnpm install --no-frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
