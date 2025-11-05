@@ -32,9 +32,25 @@ if (!fs.existsSync('.env')) {
   console.log('📝 Please update .env file with your actual values before deployment')
 }
 
+// Update pnpm lockfile if needed
+console.log('🔧 Updating pnpm lockfile...')
+try {
+  execSync('pnpm install', { stdio: 'pipe' })
+  console.log('✅ pnpm lockfile updated successfully')
+} catch (error) {
+  console.log('⚠️  pnpm lockfile update needed, updating...')
+  try {
+    execSync('pnpm install --no-frozen-lockfile', { stdio: 'inherit' })
+    console.log('✅ pnpm lockfile updated successfully')
+  } catch (updateError) {
+    console.error('❌ Failed to update pnpm lockfile:', updateError.message)
+    process.exit(1)
+  }
+}
+
 // Validate Dockerfile
 try {
-  execSync('docker build -t test-build -f Dockerfile --target runner .', { 
+  execSync('docker build -t test-build -f Dockerfile --target runner .', {
     stdio: 'pipe',
     timeout: 300000 // 5 minutes
   })

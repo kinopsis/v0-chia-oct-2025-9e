@@ -1,11 +1,11 @@
-# Multi-stage build for optimal performance
-FROM node:20-alpine AS base
+# Use Node.js 22 for better compatibility
+FROM node:22-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --no-frozen-lockfile --prod
+RUN npm install -g pnpm && pnpm install --no-frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -19,6 +19,8 @@ RUN pnpm run build
 FROM base AS runner
 WORKDIR /app
 
+# Set Node.js version environment variable for Nixpacks
+ENV NIXPACKS_NODE_VERSION=22
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
