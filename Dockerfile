@@ -12,8 +12,8 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Build with standalone output for production
-RUN pnpm run build
+# Install pnpm globally in the builder stage and build
+RUN npm install -g pnpm && pnpm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
