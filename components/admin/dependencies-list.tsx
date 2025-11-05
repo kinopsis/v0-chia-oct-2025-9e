@@ -10,27 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Search, Building2, Folder, MoreHorizontal, Eye, EyeOff } from "lucide-react";
 import { DependencyActions } from "./dependency-actions";
 
-interface Dependencia {
-  id: number;
-  codigo: string;
-  sigla: string | null;
-  nombre: string;
-  tipo: 'dependencia' | 'subdependencia';
-  dependencia_padre_id: number | null;
-  nivel: number;
-  orden: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  telefono_directo?: string | null;
-  correo_electronico?: string | null;
-  direccion?: string | null;
-  horario_atencion?: string | null;
-  parent?: {
-    nombre: string;
-    codigo: string;
-  };
-}
+import { Dependencia } from '@/lib/types-dependencias';
 
 interface DependenciesListProps {
   dependencies: Dependencia[];

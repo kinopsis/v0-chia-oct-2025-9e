@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     let totalImported = 0;
     let totalSkipped = 0;
-    const errors: Array<{ row: number; error: string; data: Record<string, any> }> = [];
+    const errors: Array<{ row: number; error: string; data: Record<string, unknown> }> = [];
 
     // Procesar cada registro
     for (let i = 0; i < records.length; i++) {
@@ -86,10 +86,10 @@ export async function POST(request: NextRequest) {
         if (!existingDependencia) {
           totalSkipped++;
           errors.push({
-            row: i + 2, // +2 porque la primera fila es encabezado y arrays empiezan en 0
-            error: `No se encontró dependencia con código ${validatedRecord.CODIGO}`,
-            data: record
-          });
+                      row: i + 2, // +2 porque la primera fila es encabezado y arrays empiezan en 0
+                      error: `No se encontró dependencia con código ${validatedRecord.CODIGO}`,
+                      data: record as Record<string, unknown>
+                    });
           continue;
         }
 
@@ -105,10 +105,10 @@ export async function POST(request: NextRequest) {
           if (existingEmail) {
             totalSkipped++;
             errors.push({
-              row: i + 2,
-              error: `El correo ${validatedRecord['CORREO ELECTRONICO']} ya está registrado en otra dependencia`,
-              data: record
-            });
+                          row: i + 2,
+                          error: `El correo ${validatedRecord['CORREO ELECTRONICO']} ya está registrado en otra dependencia`,
+                          data: record as Record<string, unknown>
+                        });
             continue;
           }
         }
@@ -131,10 +131,10 @@ export async function POST(request: NextRequest) {
         if (updateError) {
           totalSkipped++;
           errors.push({
-            row: i + 2,
-            error: `Error al actualizar dependencia: ${updateError.message}`,
-            data: record
-          });
+                      row: i + 2,
+                      error: `Error al actualizar dependencia: ${updateError.message}`,
+                      data: record as Record<string, unknown>
+                    });
           continue;
         }
 
@@ -143,12 +143,12 @@ export async function POST(request: NextRequest) {
       } catch (validationError) {
         totalSkipped++;
         errors.push({
-          row: i + 2,
-          error: validationError instanceof z.ZodError 
-            ? validationError.errors.map(e => e.message).join(', ')
-            : String(validationError),
-          data: record
-        });
+                  row: i + 2,
+                  error: validationError instanceof z.ZodError
+                    ? validationError.errors.map(e => e.message).join(', ')
+                    : String(validationError),
+                  data: record as Record<string, unknown>
+                });
       }
     }
 

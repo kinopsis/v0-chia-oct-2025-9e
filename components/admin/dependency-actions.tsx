@@ -4,19 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Edit, Trash2, Plus, Download } from "lucide-react";
 
-interface Dependencia {
-  id: number;
-  codigo: string;
-  sigla: string | null;
-  nombre: string;
-  tipo: 'dependencia' | 'subdependencia';
-  dependencia_padre_id: number | null;
-  nivel: number;
-  orden: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
+import { Dependencia } from '@/lib/types-dependencias';
 
 interface DependencyActionsProps {
   dependency: Dependencia;
