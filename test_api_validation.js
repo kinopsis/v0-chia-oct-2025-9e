@@ -3,7 +3,7 @@ import { createClient } from './lib/supabase/server.js'
 
 async function testTramitesAPI() {
   try {
-    const supabase = await createClient()
+    const supabase = createClient()
 
     // Test 1: Verificar que la API devuelve dependencias desde joins
     const { data, error } = await supabase
@@ -60,7 +60,7 @@ async function testTramitesAPI() {
       console.log(`   Dependencia: ${tramite81388.dependencias?.[0]?.nombre || 'Ninguna'}`)
       console.log(`   Subdependencia: ${tramite81388.subdependencias?.[0]?.nombre || 'Ninguna'}`)
       
-      if (tramite81388.dependencias?.[0]?.nombre === 'Secretaría de Hacienda' && 
+      if (tramite81388.dependencias?.[0]?.nombre === 'Secretaría de Hacienda' &&
           tramite81388.subdependencias?.[0]?.nombre === 'Dirección de Rentas') {
         console.log("✅ Relación de dependencias correcta para el trámite 81388")
       } else {
@@ -79,6 +79,8 @@ async function testTramitesAPI() {
 }
 
 // Ejecutar la prueba
-testTramitesAPI().then(success => {
-  process.exit(success ? 0 : 1)
-})
+if (import.meta.url === `file://${process.argv[1]}`) {
+    testTramitesAPI().then(success => {
+      process.exit(success ? 0 : 1)
+    })
+}

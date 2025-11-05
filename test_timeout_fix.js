@@ -2,7 +2,7 @@
 
 /**
  * Script de prueba para verificar la solución del problema de timeout en el webhook de n8n
- * 
+ *
  * Este script prueba:
  * 1. La configuración de timeout en la base de datos
  * 2. El manejo de errores en los endpoints
@@ -35,11 +35,12 @@ async function testDatabaseConfig() {
         console.log(`   ✅ Reintentos máximos: ${config.max_retries}`)
         console.log(`   ✅ Integración activa: ${config.is_active}`)
         
-        if (config.timeout_seconds >= 60) {
-            console.log('   ✅ El timeout ha sido aumentado correctamente a 60s o más')
+        const expectedTimeout = parseInt(process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60")
+        if (config.timeout_seconds >= expectedTimeout) {
+            console.log(`   ✅ El timeout ha sido aumentado correctamente a ${expectedTimeout}s o más`)
             return true
         } else {
-            console.log('   ❌ El timeout sigue siendo menor a 60s')
+            console.log(`   ❌ El timeout sigue siendo menor a ${expectedTimeout}s`)
             return false
         }
     } catch (error) {
@@ -55,23 +56,25 @@ function testEndpointTimeoutHandling() {
     // Verificar que los endpoints tengan el límite correcto
     const fs = require('fs')
     const path = require('path')
+    const expectedTimeout = parseInt(process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60")
+    const expectedTimeoutMs = expectedTimeout * 1000
     
     try {
         // Verificar send-enhanced/route.ts
         const enhancedRoute = fs.readFileSync('./app/api/chat/send-enhanced/route.ts', 'utf8')
-        if (enhancedRoute.includes('60000') && enhancedRoute.includes('Max 60s')) {
-            console.log('   ✅ send-enhanced/route.ts: Límite de timeout actualizado a 60s')
+        if (enhancedRoute.includes(expectedTimeoutMs.toString()) && enhancedRoute.includes(`Max ${expectedTimeout}s`)) {
+            console.log(`   ✅ send-enhanced/route.ts: Límite de timeout actualizado a ${expectedTimeout}s`)
         } else {
-            console.log('   ❌ send-enhanced/route.ts: Límite de timeout no actualizado')
+            console.log(`   ❌ send-enhanced/route.ts: Límite de timeout no actualizado a ${expectedTimeout}s`)
             return false
         }
         
         // Verificar send/route.ts
         const basicRoute = fs.readFileSync('./app/api/chat/send/route.ts', 'utf8')
-        if (basicRoute.includes('60000') && basicRoute.includes('Max 60s')) {
-            console.log('   ✅ send/route.ts: Límite de timeout actualizado a 60s')
+        if (basicRoute.includes(expectedTimeoutMs.toString()) && basicRoute.includes(`Max ${expectedTimeout}s`)) {
+            console.log(`   ✅ send/route.ts: Límite de timeout actualizado a ${expectedTimeout}s`)
         } else {
-            console.log('   ❌ send/route.ts: Límite de timeout no actualizado')
+            console.log(`   ❌ send/route.ts: Límite de timeout no actualizado a ${expectedTimeout}s`)
             return false
         }
         
@@ -86,15 +89,17 @@ function testEndpointTimeoutHandling() {
 function testAdminForm() {
     console.log('\n📋 Prueba 3: Verificando formulario de administración')
     
+    const expectedTimeout = parseInt(process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60")
+    
     try {
         const fs = require('fs')
         const adminForm = fs.readFileSync('./components/admin/n8n-config-form.tsx', 'utf8')
         
-        if (adminForm.includes('max="60"') && adminForm.includes('5-60 segundos')) {
-            console.log('   ✅ Formulario de administración: Límite de timeout actualizado a 60s')
+        if (adminForm.includes(`max="${expectedTimeout}"`) && adminForm.includes(`5-${expectedTimeout} segundos`)) {
+            console.log(`   ✅ Formulario de administración: Límite de timeout actualizado a ${expectedTimeout}s`)
             return true
         } else {
-            console.log('   ❌ Formulario de administración: Límite de timeout no actualizado')
+            console.log(`   ❌ Formulario de administración: Límite de timeout no actualizado a ${expectedTimeout}s`)
             return false
         }
     } catch (error) {
@@ -107,17 +112,19 @@ function testAdminForm() {
 function testChatWidgetErrorHandling() {
     console.log('\n📋 Prueba 4: Verificando manejo de errores en chat widget')
     
+    const expectedTimeout = parseInt(process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60")
+    
     try {
         const fs = require('fs')
         const chatWidget = fs.readFileSync('./components/chat-widget.tsx', 'utf8')
         
-        if (chatWidget.includes('AbortError') && 
-            chatWidget.includes('timeout') && 
+        if (chatWidget.includes('AbortError') &&
+            chatWidget.includes('timeout') &&
             chatWidget.includes('Tiempo de espera agotado')) {
-            console.log('   ✅ Chat widget: Manejo de errores de timeout mejorado')
+            console.log(`   ✅ Chat widget: Manejo de errores de timeout mejorado (límite: ${expectedTimeout}s)`)
             return true
         } else {
-            console.log('   ❌ Chat widget: Manejo de errores de timeout no mejorado')
+            console.log(`   ❌ Chat widget: Manejo de errores de timeout no mejorado (límite: ${expectedTimeout}s)`)
             return false
         }
     } catch (error) {
@@ -145,12 +152,12 @@ async function runTests() {
     if (passedTests === totalTests) {
         console.log('\n🎉 ¡Todas las pruebas han pasado! La solución ha sido implementada correctamente.')
         console.log('\n📋 Resumen de cambios realizados:')
-        console.log('   • Timeout aumentado de 30s a 60s en la base de datos')
-        console.log('   • Límite máximo de timeout actualizado a 60s en endpoints')
-        console.log('   • Formulario de administración actualizado para permitir hasta 60s')
+        console.log(`   • Timeout aumentado de 30s a ${process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60"}s en la base de datos`)
+        console.log(`   • Límite máximo de timeout actualizado a ${process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60"}s en endpoints`)
+        console.log(`   • Formulario de administración actualizado para permitir hasta ${process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60"}s`)
         console.log('   • Manejo de errores de timeout mejorado en chat widget')
         console.log('\n💡 El problema de "This operation was aborted" debería estar resuelto.')
-        console.log('   Si el webhook de n8n tarda más de 60 segundos, se mostrará un mensaje de error más claro.')
+        console.log(`   Si el webhook de n8n tarda más de ${process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60"} segundos, se mostrará un mensaje de error más claro.`)
     } else {
         console.log('\n⚠️  Algunas pruebas fallaron. Revise los errores anteriores.')
     }

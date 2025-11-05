@@ -18,14 +18,14 @@ async function testSpecificUrlSave() {
     console.log('📋 Prueba: Guardando la URL específica proporcionada')
     
     const configData = {
-        webhook_url: "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat",
-        api_key: "",
+        webhook_url: process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat",
+        api_key: process.env.NEXT_PUBLIC_N8N_API_KEY || "",
         is_active: true,
-        timeout_seconds: 60,
-        max_retries: 3,
+        timeout_seconds: parseInt(process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60"),
+        max_retries: parseInt(process.env.NEXT_PUBLIC_N8N_MAX_RETRIES || "3"),
         custom_prompts: {
-            system_prompt: "Eres un asistente virtual del Municipio de Chía, Colombia. Ayuda a los ciudadanos con información sobre trámites y servicios municipales. Sé amable, claro y conciso en tus respuestas.",
-            greeting: "¡Hola! Soy el asistente virtual de la Alcaldía de Chía. ¿En qué puedo ayudarte hoy?"
+            system_prompt: process.env.NEXT_PUBLIC_N8N_SYSTEM_PROMPT || "Eres un asistente virtual del Municipio de Chía, Colombia. Ayuda a los ciudadanos con información sobre trámites y servicios municipales. Sé amable, claro y conciso en tus respuestas.",
+            greeting: process.env.NEXT_PUBLIC_N8N_GREETING || "¡Hola! Soy el asistente virtual de la Alcaldía de Chía. ¿En qué puedo ayudarte hoy?"
         }
     }
     
@@ -81,7 +81,7 @@ function verifyTechnicalFix() {
 function verifyUrlFormat() {
     console.log('\n📋 Verificación: Formato de la URL proporcionada')
     
-    const url = "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat"
+    const url = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat"
     
     try {
         new URL(url)
@@ -120,7 +120,7 @@ async function runTests() {
         
         console.log('\n💡 Para probar manualmente:')
         console.log('   1. Vaya a /admin/configuracion')
-        console.log('   2. Ingrese: https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat')
+        console.log(`   2. Ingrese: ${process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat"}`)
         console.log('   3. Haga clic en "Guardar Configuración"')
         console.log('   4. ✅ Debería mostrar "Configuración guardada exitosamente"')
         console.log('   5. ✅ La URL debería actualizarse en la base de datos')

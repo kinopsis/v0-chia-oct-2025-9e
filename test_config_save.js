@@ -2,7 +2,7 @@
 
 /**
  * Script de prueba para verificar que la configuración de n8n se guarda correctamente
- * 
+ *
  * Este script prueba:
  * 1. El guardado de configuración con la nueva URL proporcionada
  * 2. La validación de los datos
@@ -18,24 +18,24 @@ async function testConfigSave() {
     console.log('📋 Prueba 1: Probando guardado de configuración con nueva URL')
     
     const configData = {
-        webhook_url: "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat",
-        api_key: "",
+        webhook_url: process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat",
+        api_key: process.env.NEXT_PUBLIC_N8N_API_KEY || "",
         is_active: true,
-        timeout_seconds: 60,
-        max_retries: 3,
+        timeout_seconds: parseInt(process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60"),
+        max_retries: parseInt(process.env.NEXT_PUBLIC_N8N_MAX_RETRIES || "3"),
         custom_prompts: {
-            system_prompt: "Eres un asistente virtual del Municipio de Chía, Colombia. Ayuda a los ciudadanos con información sobre trámites y servicios municipales. Sé amable, claro y conciso en tus respuestas.",
-            greeting: "¡Hola! Soy el asistente virtual de la Alcaldía de Chía. ¿En qué puedo ayudarte hoy?"
+            system_prompt: process.env.NEXT_PUBLIC_N8N_SYSTEM_PROMPT || "Eres un asistente virtual del Municipio de Chía, Colombia. Ayuda a los ciudadanos con información sobre trámites y servicios municipales. Sé amable, claro y conciso en tus respuestas.",
+            greeting: process.env.NEXT_PUBLIC_N8N_GREETING || "¡Hola! Soy el asistente virtual de la Alcaldía de Chía. ¿En qué puedo ayudarte hoy?"
         }
     }
     
     try {
         // Simular una solicitud POST al endpoint
-        const response = await fetch('http://localhost:3000/api/admin/n8n-config', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/admin/n8n-config`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': 'auth-token=mock-admin-token' // Token de prueba
+                'Cookie': `auth-token=${process.env.NEXT_PUBLIC_MOCK_ADMIN_TOKEN || 'mock-admin-token'}` // Token de prueba
             },
             body: JSON.stringify(configData)
         })
@@ -79,7 +79,7 @@ async function testDatabaseUpdate() {
 function testTimeoutCompatibility() {
     console.log('\n📋 Prueba 3: Verificando compatibilidad de timeout')
     
-    const timeout = 60
+    const timeout = parseInt(process.env.NEXT_PUBLIC_N8N_TIMEOUT_SECONDS || "60")
     const maxAllowed = 60
     
     if (timeout <= maxAllowed && timeout >= 5) {
@@ -116,7 +116,7 @@ async function runTests() {
         
         console.log('\n💡 Para probar manualmente:')
         console.log('   1. Vaya a /admin/configuracion')
-        console.log('   2. Ingrese la URL: https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat')
+        console.log(`   2. Ingrese la URL: ${process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "https://automata.torrecentral.com/webhook/4091fa09-fb9a-4039-9411-7104d213f601/chat"}`)
         console.log('   3. Ajuste el timeout a 60 segundos si es necesario')
         console.log('   4. Haga clic en "Guardar Configuración"')
         console.log('   5. Verifique que no hay errores y que la configuración se guarda')
