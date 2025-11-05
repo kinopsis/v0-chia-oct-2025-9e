@@ -5,27 +5,7 @@ import { DependenciesList } from "./dependencies-list";
 import { DependencyDialog } from "./dependency-dialog";
 import { Button } from "@/components/ui/button";
 
-interface Dependencia {
-  id: number;
-  codigo: string;
-  sigla: string | null;
-  nombre: string;
-  tipo: 'dependencia' | 'subdependencia';
-  dependencia_padre_id: number | null;
-  nivel: number;
-  orden: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  telefono?: string | null;
-  email?: string | null;
-  direccion?: string | null;
-  horario_atencion?: string | null;
-  parent?: {
-    nombre: string;
-    codigo: string;
-  };
-}
+import { Dependencia } from '@/lib/types-dependencias';
 
 interface DependenciesManagerProps {
   dependencies: Dependencia[];

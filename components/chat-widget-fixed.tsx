@@ -500,12 +500,12 @@ export function ChatWidgetFixed() {
                       onKeyPress={handleKeyPress}
                       className="flex-1"
                       aria-label="Escribe tu mensaje"
-                      disabled={connectionStatus === "critical" || !isInitialized}
+                      disabled={connectionStatus === "error" || !isInitialized}
                     />
                     <Button 
                       size="icon" 
                       type="submit" 
-                      disabled={!inputText.trim() || connectionStatus === "critical"}
+                      disabled={!inputText.trim() || connectionStatus === "error"}
                       aria-label="Enviar mensaje"
                     >
                       <Send className="h-4 w-4" aria-hidden="true" />

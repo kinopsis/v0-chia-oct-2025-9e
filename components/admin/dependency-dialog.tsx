@@ -10,7 +10,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Building2, Folder } from "lucide-react";
 
-interface Dependencia {
+interface DependenciaFormData {
   id?: number;
   codigo: string;
   sigla: string | null;
@@ -20,8 +20,8 @@ interface Dependencia {
   nivel: number;
   orden: number;
   is_active: boolean;
-  telefono?: string | null;
-  email?: string | null;
+  telefono_directo?: string | null;
+  correo_electronico?: string | null;
   direccion?: string | null;
   horario_atencion?: string | null;
 }
@@ -30,8 +30,8 @@ interface DependencyDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   mode: "create" | "edit";
-  dependency?: Dependencia | null;
-  onSave: (dependency: Dependencia) => void;
+  dependency?: DependenciaFormData | null;
+  onSave: (dependency: DependenciaFormData) => void;
   canEdit: boolean;
 }
 
@@ -43,7 +43,7 @@ export function DependencyDialog({
   onSave,
   canEdit
 }: DependencyDialogProps) {
-  const [formData, setFormData] = useState<Dependencia>({
+  const [formData, setFormData] = useState<DependenciaFormData>({
     codigo: "",
     sigla: "",
     nombre: "",
@@ -52,8 +52,8 @@ export function DependencyDialog({
     nivel: 0,
     orden: 0,
     is_active: true,
-    telefono: "",
-    email: "",
+    telefono_directo: "",
+    correo_electronico: "",
     direccion: "",
     horario_atencion: "",
   });
@@ -72,8 +72,8 @@ export function DependencyDialog({
         nivel: dependency.nivel || 0,
         orden: dependency.orden || 0,
         is_active: dependency.is_active !== false,
-        telefono: dependency.telefono || "",
-        email: dependency.email || "",
+        telefono_directo: dependency.telefono_directo || "",
+                correo_electronico: dependency.correo_electronico || "",
         direccion: dependency.direccion || "",
         horario_atencion: dependency.horario_atencion || "",
       });
@@ -88,8 +88,8 @@ export function DependencyDialog({
         nivel: 0,
         orden: 0,
         is_active: true,
-        telefono: "",
-        email: "",
+        telefono_directo: "",
+        correo_electronico: "",
         direccion: "",
         horario_atencion: "",
       });
@@ -125,7 +125,7 @@ export function DependencyDialog({
       const result = await response.json();
 
       if (response.ok) {
-        onSave(result.data);
+        onSave(result.data as DependenciaFormData);
         onOpenChange(false);
         setFormData({
           codigo: "",
@@ -136,10 +136,10 @@ export function DependencyDialog({
           nivel: 0,
           orden: 0,
           is_active: true,
-          telefono: "",
-          email: "",
-          direccion: "",
-          horario_atencion: "",
+          telefono_directo: "",
+                     correo_electronico: "",
+                     direccion: "",
+                     horario_atencion: "",
         });
       } else {
         setErrors({ general: result.error || "Error al guardar la dependencia" });
@@ -151,7 +151,7 @@ export function DependencyDialog({
     }
   };
 
-  const handleInputChange = (field: keyof Dependencia, value: any) => {
+  const handleInputChange = (field: keyof DependenciaFormData, value: any) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -271,24 +271,24 @@ export function DependencyDialog({
               <div className="space-y-2">
                 <Label htmlFor="telefono">Teléfono</Label>
                 <Input
-                  id="telefono"
-                  value={formData.telefono || ""}
-                  onChange={(e) => handleInputChange("telefono", e.target.value)}
-                  disabled={!canEdit}
-                  placeholder="Ej: 311 123 4567"
-                />
+                                 id="telefono"
+                                 value={formData.telefono_directo || ""}
+                                 onChange={(e) => handleInputChange("telefono_directo", e.target.value)}
+                                 disabled={!canEdit}
+                                 placeholder="Ej: 311 123 4567"
+                               />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  value={formData.email || ""}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  disabled={!canEdit}
-                  placeholder="Ej: contacto@dependencia.gov.co"
-                />
+                                   id="email"
+                                   type="email"
+                                   value={formData.correo_electronico || ""}
+                                   onChange={(e) => handleInputChange("correo_electronico", e.target.value)}
+                                   disabled={!canEdit}
+                                   placeholder="Ej: contacto@dependencia.gov.co"
+                                 />
               </div>
             </div>
 
