@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
       target: runner
@@ -11,17 +11,21 @@ services:
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
     volumes:
-      - ./logs:/app/logs
+      - app-logs:/app/logs
     restart: unless-stopped
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    labels:
+      - "coolify.service=true"
 
   nginx:
     image: nginx:alpine
@@ -30,16 +34,22 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
+      - nginx-ssl:/etc/nginx/ssl:ro
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - app-network
+    labels:
+      - "coolify.service=true"
+      - "coolify.https=true"
+      - "coolify.domain=your-domain.com"
 
 networks:
   app-network:
     driver: bridge
 
 volumes:
-  logs:
+  app-logs:
+  nginx-ssl:

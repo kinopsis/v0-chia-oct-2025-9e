@@ -1,345 +1,242 @@
-# Guía de Despliegue para Dokploy - Trámites App
+# Coolify Deployment Guide
 
-Esta guía proporciona instrucciones completas para desplegar la aplicación de trámites en Dokploy con configuración optimizada para producción.
+This guide provides all the necessary information to deploy the application successfully on Coolify.
 
-## 📋 Requisitos Previos
+## 📋 Prerequisites
 
-### Requisitos del Sistema
-- **Docker** 20.10 o superior
-- **Docker Compose** 1.29 o superior
-- **Node.js** 18 o superior
-- **Git** 2.30 o superior
-- **openssl** (para generación de SSL)
+- Coolify account with access to your server
+- Domain name (optional, but recommended)
+- SSL certificates (optional, but recommended)
+- Git repository with the project code
 
-### Requisitos de Infraestructura
-- Servidor Linux (Ubuntu 20.04/22.04 recomendado)
-- Mínimo 2GB RAM
-- Mínimo 2GB espacio en disco
-- Acceso root o sudo
+## 🚀 Quick Start
 
-## 🚀 Preparación del Entorno
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd <project-directory>
+   ```
 
-### 1. Clonar el Repositorio
-```bash
-git clone <tu-repositorio>
-cd tramites-app
+2. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+
+3. **Build the application:**
+   ```bash
+   pnpm run build
+   ```
+
+4. **Run deployment script:**
+   ```bash
+   node scripts/deploy-coolify.mjs
+   ```
+
+## 📁 Project Structure
+
+```
+├── Dockerfile              # Multi-stage Docker build for production
+├── docker-compose.yml      # Coolify-compatible compose file
+├── .env.example           # Environment variables template
+├── .env                   # Environment variables (create from .env.example)
+├── next.config.mjs        # Next.js configuration with standalone output
+├── nginx.conf            # Nginx configuration for production
+├── scripts/
+│   └── deploy-coolify.mjs # Deployment validation script
+└── ssl/                  # SSL certificates directory
 ```
 
-### 2. Configurar Variables de Entorno
-Cree un archivo `.env` basado en `.env.example`:
+## 🔧 Configuration
+
+### Environment Variables
+
+Copy `.env.example` to `.env` and configure the following variables:
 
 ```bash
-cp .env.example .env
-```
-
-Edite el archivo `.env` con sus valores reales:
-
-```env
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=tu_url_supabase
-NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_clave_anonima
-SUPABASE_JWT_SECRET=tu_jwt_secret
-SUPABASE_SERVICE_ROLE_KEY=tu_clave_service_role
-
 # Environment
 NODE_ENV=production
 
-# Dokploy Configuration
-DOKPLOY_APP_NAME=tramites-app
-DOKPLOY_PROJECT_NAME=tramites-platform
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+SUPABASE_JWT_SECRET=your_supabase_jwt_secret
+
+# Site Configuration
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_NAME=Your Site Name
+NEXT_PUBLIC_SITE_DESCRIPTION=Your site description
+
+# SSL Configuration
+SSL_CERT_PATH=/etc/nginx/ssl/cert.pem
+SSL_KEY_PATH=/etc/nginx/ssl/key.pem
 ```
 
-### 3. Instalar Dependencias
-```bash
-npm install -g pnpm
-pnpm install
+### SSL Certificates
+
+Place your SSL certificates in the `ssl/` directory:
+
+- `cert.pem` - Your SSL certificate
+- `key.pem` - Your private key
+
+## 🏗️ Coolify Configuration
+
+### Service Settings
+
+**Application Service:**
+- **Repository:** Your Git repository URL
+- **Branch:** main/master
+- **Build Command:** `pnpm install && pnpm run build`
+- **Start Command:** `docker-compose up -d`
+- **Environment Variables:** Use values from `.env` file
+
+**Docker Compose Settings:**
+- **Compose File:** `docker-compose.yml`
+- **Project Name:** `tramites-municipales`
+- **Restart Policy:** `unless-stopped`
+
+### Environment Variables in Coolify
+
+Add these environment variables in Coolify:
+
+```
+NODE_ENV=production
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
 
-## 🏗️ Configuración de Dokploy
+## 🛡️ Security Features
 
-### 1. Construir la Aplicación
+### Docker Security
+- Non-root user execution (`nextjs:1001`)
+- Minimal Alpine Linux base image
+- Health checks for service monitoring
+- Proper file permissions
+
+### Nginx Security
+- HTTPS enforcement
+- Security headers (HSTS, CSP, X-Frame-Options)
+- Rate limiting for API and login endpoints
+- SSL/TLS configuration
+
+### Application Security
+- Environment variable validation
+- Input sanitization
+- CSRF protection
+- Rate limiting
+
+## 📊 Monitoring
+
+### Health Checks
+- Application: `GET /api/health`
+- Docker health check every 30 seconds
+- Graceful startup period (40s)
+
+### Logging
+- Application logs: `/app/logs/`
+- Nginx access logs: `/var/log/nginx/access.log`
+- Nginx error logs: `/var/log/nginx/error.log`
+
+## 🔄 Database Migrations
+
+The application includes database migration scripts in the `scripts/` directory:
+
+- `01-create-profiles-table.sql` - Create user profiles table
+- `02-create-tramites-table.sql` - Create procedures table
+- `08-create-dependencias-table.sql` - Create dependencies table
+- Additional migration scripts for feature updates
+
+Run migrations manually or integrate with your deployment pipeline.
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+**Build Failures:**
+- Check Dockerfile syntax
+- Verify environment variables
+- Ensure all dependencies are installed
+
+**SSL Certificate Errors:**
+- Verify certificate files exist in `ssl/` directory
+- Check file permissions
+- Ensure certificates are valid and not expired
+
+**Database Connection Issues:**
+- Verify Supabase configuration
+- Check network connectivity
+- Review migration scripts
+
+**Nginx Configuration Errors:**
+- Validate `nginx.conf` syntax
+- Check SSL certificate paths
+- Verify port bindings
+
+### Logs and Debugging
+
+**Application Logs:**
 ```bash
-pnpm run build
+docker-compose logs app
 ```
 
-### 2. Configurar SSL
-Para entornos de desarrollo, el script generará certificados auto-firmados:
+**Nginx Logs:**
 ```bash
-mkdir -p ssl
-openssl req -x509 -newkey rsa:4096 -keyout ssl/key.pem -out ssl/cert.pem -days 365 -nodes -subj "/C=CO/ST=Antioquia/L=Medellin/O=TramitesApp/CN=localhost"
+docker-compose logs nginx
 ```
 
-Para producción, coloque sus certificados SSL reales en la carpeta `ssl/`.
-
-### 3. Desplegar con Script Automático
+**Health Check Status:**
 ```bash
-node scripts/deploy-dokploy.mjs
-```
-
-### 4. Desplegar Manualmente
-```bash
-# Construir imágenes
-docker-compose build
-
-# Iniciar servicios
-docker-compose up -d
-
-# Verificar estado
 docker-compose ps
 ```
 
-## ⚙️ Configuración de Dominios y SSL
+## 📈 Performance Optimization
 
-### 1. Configuración de DNS
-Apunte su dominio al servidor:
-- A Record: `tu-dominio.com` → `IP_DEL_SERVIDOR`
-- CNAME: `www.tu-dominio.com` → `tu-dominio.com`
+### Docker Optimizations
+- Multi-stage builds to reduce image size
+- Layer caching for faster builds
+- Production-optimized dependencies
 
-### 2. Actualizar Nginx Config
-Edite `nginx.conf` y cambie `server_name _;` por su dominio real:
+### Nginx Optimizations
+- Gzip compression
+- Static file caching
+- HTTP/2 support
+- Connection pooling
 
-```nginx
-server_name tu-dominio.com www.tu-dominio.com;
-```
+### Application Optimizations
+- Next.js static optimization
+- Image optimization
+- Bundle splitting
+- Code splitting
 
-### 3. Configurar Certificados SSL Reales
-Para Let's Encrypt con Certbot:
+## 🔄 Updates and Maintenance
 
-```bash
-# Instalar Certbot
-sudo apt install certbot python3-certbot-nginx
+### Regular Maintenance
+- Update dependencies monthly
+- Rotate SSL certificates before expiration
+- Monitor disk space for logs
+- Review security configurations
 
-# Obtener certificado
-sudo certbot --nginx -d tu-dominio.com -d www.tu-dominio.com
+### Deployment Updates
+1. Update code in repository
+2. Run deployment script to validate changes
+3. Push to Git
+4. Coolify will automatically deploy changes
+5. Monitor deployment status
 
-# Configurar renovación automática
-sudo crontab -e
-# Añadir: 0 12 * * * /usr/bin/certbot renew --quiet
-```
+## 📞 Support
 
-## 🔧 Comandos de Despliegue y Verificación
+For issues with this deployment:
 
-### Comandos Básicos
-```bash
-# Ver logs de la aplicación
-docker-compose logs -f app
+1. Check the troubleshooting section
+2. Review Coolify documentation
+3. Examine application and system logs
+4. Verify all configuration files
 
-# Ver logs de Nginx
-docker-compose logs -f nginx
+## 📝 Notes
 
-# Detener servicios
-docker-compose down
-
-# Iniciar servicios
-docker-compose up -d
-
-# Reiniciar servicios
-docker-compose restart
-
-# Ver estado de los servicios
-docker-compose ps
-```
-
-### Verificación del Despliegue
-```bash
-# Verificar que los contenedores están corriendo
-docker-compose ps
-
-# Verificar acceso a la aplicación
-curl -I https://tu-dominio.com
-
-# Verificar estado de salud
-curl -f http://localhost:3000
-
-# Verificar SSL
-openssl s_client -connect tu-dominio.com:443
-```
-
-## 📊 Monitoreo Post-Despliegue
-
-### 1. Métricas Básicas
-```bash
-# Ver uso de recursos
-docker stats
-
-# Ver logs en tiempo real
-docker-compose logs -f
-
-# Ver historial de despliegues
-git log --oneline -10
-```
-
-### 2. Health Checks
-La aplicación incluye health checks automáticos:
-- `/api/health` - Estado de la aplicación
-- `/api/health/db` - Estado de la base de datos
-
-### 3. Monitoreo de Rendimiento
-```bash
-# Ver métricas de Nginx
-docker exec -it nginx nginx -T
-
-# Ver estadísticas de conexión
-netstat -tulpn | grep :80
-netstat -tulpn | grep :443
-```
-
-## 🔍 Troubleshooting Común
-
-### 1. Problemas de Construcción
-```bash
-# Limpiar caché de Docker
-docker system prune -a
-
-# Reconstruir imágenes
-docker-compose build --no-cache
-
-# Verificar dependencias
-pnpm install --frozen-lockfile
-```
-
-### 2. Problemas de Conexión
-```bash
-# Verificar puertos abiertos
-netstat -tulpn | grep :3000
-
-# Verificar configuración de red
-docker network ls
-docker network inspect <network-name>
-
-# Verificar DNS
-nslookup tu-dominio.com
-```
-
-### 3. Problemas de SSL
-```bash
-# Verificar certificados
-openssl x509 -in ssl/cert.pem -text -noout
-
-# Verificar llave privada
-openssl rsa -in ssl/key.pem -check
-
-# Regenerar certificados
-rm ssl/*
-# Volver a generar
-```
-
-### 4. Problemas de Base de Datos
-```bash
-# Verificar conexión a Supabase
-curl -I https://tu-proyecto.supabase.co/rest/v1/
-
-# Verificar variables de entorno
-docker-compose exec app printenv | grep SUPABASE
-```
-
-## 🔄 Procedimientos de Rollback
-
-### 1. Rollback de Código
-```bash
-# Ver commits anteriores
-git log --oneline
-
-# Hacer rollback a commit específico
-git revert <commit-hash>
-
-# O volver a commit anterior
-git reset --hard HEAD~1
-
-# Volver a desplegar
-pnpm run build
-docker-compose up -d --force-recreate
-```
-
-### 2. Rollback de Base de Datos
-```bash
-# Verificar respaldos
-# Restaurar desde Supabase dashboard
-# O usar pg_dump/pg_restore
-pg_restore -h localhost -U usuario -d base_de_datos backup.dump
-```
-
-### 3. Rollback de Configuración
-```bash
-# Verificar configuraciones anteriores
-git checkout HEAD~1 -- nginx.conf
-git checkout HEAD~1 -- docker-compose.yml
-
-# Recargar configuración
-docker-compose up -d --force-recreate
-```
-
-## 📝 Mantenimiento
-
-### 1. Actualizaciones Regulares
-```bash
-# Actualizar dependencias
-pnpm update
-
-# Actualizar imágenes de Docker
-docker-compose pull
-
-# Reconstruir y desplegar
-pnpm run build
-docker-compose up -d --force-recreate
-```
-
-### 2. Limpieza de Logs
-```bash
-# Limpiar logs antiguos
-docker-compose logs --tail=100 -f
-
-# Limpiar imágenes y contenedores no utilizados
-docker system prune -a
-```
-
-### 3. Copias de Seguridad
-```bash
-# Respaldar base de datos Supabase
-# (Usar herramientas de Supabase o pg_dump)
-
-# Respaldar archivos de configuración
-tar -czf backup-config.tar.gz nginx.conf docker-compose.yml .env
-```
-
-## 🚨 Alertas y Notificaciones
-
-### Configurar Alertas
-1. **Monitorización de Salud**: Configurar health checks en Dokploy
-2. **Alertas de SSL**: Monitorear vencimiento de certificados
-3. **Alertas de Rendimiento**: Monitorizar uso de CPU/Memoria
-4. **Alertas de Base de Datos**: Monitorizar conexiones y queries lentas
-
-### Comandos de Emergencia
-```bash
-# Detener todo rápidamente
-docker-compose down
-
-# Acceder al contenedor de la app
-docker-compose exec app bash
-
-# Verificar estado del sistema
-htop
-df -h
-free -h
-```
-
-## 📞 Soporte
-
-### Documentación Adicional
-- [Documentación de Dokploy](https://docs.dokploy.com)
-- [Documentación de Supabase](https://supabase.com/docs)
-- [Documentación de Next.js](https://nextjs.org/docs)
-
-### Contacto
-Para soporte técnico, contacte al equipo de desarrollo con:
-- Versión del código desplegado
-- Logs relevantes
-- Descripción del problema
-- Pasos para reproducir
-
----
-
-**Última Actualización**: $(date +%Y-%m-%d)
-**Versión**: 1.0.0
-**Autor**: Equipo de DevOps
+- Always test deployments in a staging environment first
+- Keep backups of your database and configuration
+- Monitor application performance after deployment
+- Regularly update security configurations
