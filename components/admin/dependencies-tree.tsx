@@ -21,23 +21,7 @@ import {
 import { DependencyDialog } from "./dependency-dialog";
 import { DependencyActions } from "./dependency-actions";
 
-interface Dependencia {
-  id: number;
-  codigo: string;
-  sigla: string | null;
-  nombre: string;
-  tipo: 'dependencia' | 'subdependencia';
-  dependencia_padre_id: number | null;
-  nivel: number;
-  orden: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  telefono?: string | null;
-  email?: string | null;
-  direccion?: string | null;
-  horario_atencion?: string | null;
-}
+import { Dependencia } from '@/lib/types-dependencias';
 
 interface DependenciesTreeProps {
   dependencies: Dependencia[];
@@ -173,34 +157,34 @@ export function DependenciesTree({ dependencies, canEdit, error }: DependenciesT
                     </div>
                     
                     {/* Información de contacto */}
-                    {(dependency.telefono || dependency.email || dependency.direccion || dependency.horario_atencion) && (
-                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300 mt-1 pt-1 border-t border-gray-100 dark:border-gray-700">
-                        {dependency.telefono && (
-                          <div className="flex items-center gap-1">
-                            <span className="font-medium">Tel:</span>
-                            <span>{dependency.telefono}</span>
-                          </div>
-                        )}
-                        {dependency.email && (
-                          <div className="flex items-center gap-1">
-                            <span className="font-medium">Email:</span>
-                            <span className="text-blue-600 dark:text-blue-400">{dependency.email}</span>
-                          </div>
-                        )}
-                        {dependency.direccion && (
-                          <div className="flex items-center gap-1">
-                            <span className="font-medium">Dir:</span>
-                            <span className="text-gray-500 dark:text-gray-400">{dependency.direccion}</span>
-                          </div>
-                        )}
-                        {dependency.horario_atencion && (
-                          <div className="flex items-center gap-1">
-                            <span className="font-medium">Horario:</span>
-                            <span className="text-gray-500 dark:text-gray-400">{dependency.horario_atencion}</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                                        {(dependency.telefono_directo || dependency.correo_electronico || dependency.direccion || dependency.horario_atencion) && (
+                                          <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300 mt-1 pt-1 border-t border-gray-100 dark:border-gray-700">
+                                            {dependency.telefono_directo && (
+                                              <div className="flex items-center gap-1">
+                                                <span className="font-medium">Tel:</span>
+                                                <span>{dependency.telefono_directo}</span>
+                                              </div>
+                                            )}
+                                            {dependency.correo_electronico && (
+                                              <div className="flex items-center gap-1">
+                                                <span className="font-medium">Email:</span>
+                                                <span className="text-blue-600 dark:text-blue-400">{dependency.correo_electronico}</span>
+                                              </div>
+                                            )}
+                                            {dependency.direccion && (
+                                              <div className="flex items-center gap-1">
+                                                <span className="font-medium">Dir:</span>
+                                                <span className="text-gray-500 dark:text-gray-400">{dependency.direccion}</span>
+                                              </div>
+                                            )}
+                                            {dependency.horario_atencion && (
+                                              <div className="flex items-center gap-1">
+                                                <span className="font-medium">Horario:</span>
+                                                <span className="text-gray-500 dark:text-gray-400">{dependency.horario_atencion}</span>
+                                              </div>
+                                            )}
+                                          </div>
+                                        )}
                   </div>
                 </div>
               </div>
@@ -290,13 +274,13 @@ export function DependenciesTree({ dependencies, canEdit, error }: DependenciesT
       </CardContent>
 
       <DependencyDialog
-        open={showDialog}
-        onOpenChange={setShowDialog}
-        mode={dialogMode}
-        dependency={selectedDependency}
-        onSave={handleDialogSave}
-        canEdit={canEdit}
-      />
+               open={showDialog}
+               onOpenChange={setShowDialog}
+               mode={dialogMode}
+               dependency={selectedDependency}
+               onSave={(dependency) => handleDialogSave(dependency as Dependencia)}
+               canEdit={canEdit}
+             />
     </Card>
   );
 }
