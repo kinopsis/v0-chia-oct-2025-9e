@@ -19,8 +19,9 @@ RUN pnpm run build
 FROM base AS runner
 WORKDIR /app
 
-# Set Node.js version environment variable for Nixpacks
-ENV NIXPACKS_NODE_VERSION=22
+# Force Coolify to use this Dockerfile instead of Nixpacks
+ENV COOLIFY_USE_DOCKERFILE=true
+ENV NIXPACKS_DISABLE=true
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
