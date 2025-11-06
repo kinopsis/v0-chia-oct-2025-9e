@@ -1,19 +1,22 @@
 # Use Node.js 22 for better compatibility
 FROM node:22-alpine AS base
 
+# Install pnpm globally in base image for all stages
+RUN npm install -g pnpm
+
 # Install dependencies only when needed
 FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --no-frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Install pnpm globally in the builder stage and build
-RUN npm install -g pnpm && pnpm run build
+# Build the application
+RUN pnpm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
