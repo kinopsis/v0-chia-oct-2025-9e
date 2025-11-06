@@ -25,8 +25,11 @@ WORKDIR /app
 # Force Coolify to use this Dockerfile instead of Nixpacks
 ENV COOLIFY_USE_DOCKERFILE=true
 ENV NIXPACKS_DISABLE=true
+ENV FORCE_DOCKERFILE=true
+ENV SKIP_NIXPACKS=true
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PRIVATE_STANDALONE=true
 
 # Security: Create non-root user early
 RUN addgroup --system --gid 1001 nodejs && \
@@ -48,12 +51,14 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 ENV NEXT_PRIVATE_STANDALONE=true
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Health check - optimized for Coolify
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl -f --max-time 5 http://localhost:3000/api/health || exit 1
+# Health check - optimized for Coolify with proper timing
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=5 \
+  CMD curl -f --max-time 8 http://localhost:3000/api/health || exit 1
 
-# Create server.js for standalone mode if it doesn't exist
-RUN echo 'const { createServer } = require("http");\nconst { parse } = require("url");\nconst next = require("next");\n\nconst dev = process.env.NODE_ENV !== "production";\nconst hostname = "localhost";\nconst port = process.env.PORT || 3000;\n\nconst app = next({ dev, hostname, port });\nconst handle = app.getRequestHandler();\n\napp.prepare().then(() => {\n  createServer(async (req, res) => {\n    try {\n      const parsedUrl = parse(req.url, true);\n      const { pathname, query } = parsedUrl;\n\n      await handle(req, res, parsedUrl);\n    } catch (err) {\n      console.error("Error occurred handling", req.url, err);\n      res.statusCode = 500;\n      res.end("internal server error");\n    }\n  }).listen(port, (err) => {\n    if (err) throw err;\n    console.log(`> Ready on http://${hostname}:${port}`);\n  });\n});' > server.js
+# Create optimized server.js for standalone mode with proper error handling
+RUN echo 'const { createServer } = require("http");\nconst { parse } = require("url");\nconst next = require("next");\n\nconst dev = process.env.NODE_ENV !== "production";\nconst hostname = process.env.HOSTNAME || "0.0.0.0";\nconst port = parseInt(process.env.PORT) || 3000;\n\nconst app = next({ dev, hostname, port });\nconst handle = app.getRequestHandler();\n\napp.prepare().then(() => {\n  createServer(async (req, res) => {\n    try {\n      const parsedUrl = parse(req.url, true);\n      const { pathname, query } = parsedUrl;\n\n      // Add healthcheck endpoint for Coolify\n      if (pathname === "/api/health") {\n        res.statusCode = 200;\n        res.setHeader("Content-Type", "application/json");\n        res.end(JSON.stringify({ status: "ok", timestamp: new Date().toISOString() }));\n        return;\n      }\n\n      await handle(req, res, parsedUrl);\n    } catch (err) {\n      console.error("Error occurred handling", req.url, err);\n      res.statusCode = 500;\n      res.setHeader("Content-Type", "application/json");\n      res.end(JSON.stringify({ error: "Internal Server Error", timestamp: new Date().toISOString() }));\n    }\n  }).listen(port, hostname, (err) => {\n    if (err) throw err;\n    console.log(`> Ready on http://${hostname}:${port}`);\n  });\n}).catch((err) => {\n  console.error("Failed to start server", err);\n  process.exit(1);\n});' > server.js
 
 CMD ["node", "server.js"]

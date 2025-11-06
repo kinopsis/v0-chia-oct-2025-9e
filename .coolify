@@ -1,24 +1,49 @@
 # Coolify Configuration File
 # Force Dockerfile usage over Nixpacks to ensure Node.js 22 compatibility
 
-# Force Dockerfile build
+# Force Dockerfile build - Critical for Node.js 22 enforcement
 FORCE_DOCKERFILE=true
 USE_CUSTOM_DOCKERFILE=true
+CUSTOM_DOCKERFILE_PATH=Dockerfile
 
-# Disable Nixpacks
+# Disable Nixpacks completely
 SKIP_NIXPACKS=true
 NIXPACKS_DISABLE=true
+DISABLE_NIXPACKS=true
 
-# Build configuration
+# Build configuration for Next.js 16 standalone mode
 BUILD_COMMAND=pnpm install && pnpm run build
 START_COMMAND=node server.js
 BUILD_DIRECTORY=/app
 PORT=3000
+HEALTHCHECK_URL=/api/health
+HEALTHCHECK_TIMEOUT=40
+HEALTHCHECK_INTERVAL=30
+HEALTHCHECK_RETRIES=5
 
 # Environment configuration
 NODE_ENV=production
 NEXT_TELEMETRY_DISABLED=1
+NEXT_PRIVATE_STANDALONE=true
 
-# Coolify-specific optimizations
+# Coolify-specific optimizations - Force Dockerfile usage
 COOLIFY_USE_DOCKERFILE=true
 COOLIFY_SKIP_NIXPACKS=true
+COOLIFY_FORCE_DOCKERFILE=true
+COOLIFY_DISABLE_NIXPACKS=true
+
+# Additional healthcheck configuration to avoid template parsing errors
+COOLIFY_HEALTHCHECK_TIMEOUT=40
+COOLIFY_HEALTHCHECK_INTERVAL=30
+COOLIFY_HEALTHCHECK_RETRIES=5
+COOLIFY_HEALTHCHECK_START_PERIOD=40
+
+# Node.js 22 specific configuration
+NODE_VERSION=22
+FORCE_NODE_VERSION=22
+USE_NODE_22=true
+
+# Security and performance
+NON_ROOT_USER=true
+MEMORY_LIMIT=4096
+CPU_LIMIT=2
