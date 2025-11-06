@@ -1,0 +1,24 @@
+# Coolify Configuration File
+# Force Dockerfile usage over Nixpacks to ensure Node.js 22 compatibility
+
+# Force Dockerfile build
+FORCE_DOCKERFILE=true
+USE_CUSTOM_DOCKERFILE=true
+
+# Disable Nixpacks
+SKIP_NIXPACKS=true
+NIXPACKS_DISABLE=true
+
+# Build configuration
+BUILD_COMMAND=pnpm install && pnpm run build
+START_COMMAND=node server.js
+BUILD_DIRECTORY=/app
+PORT=3000
+
+# Environment configuration
+NODE_ENV=production
+NEXT_TELEMETRY_DISABLED=1
+
+# Coolify-specific optimizations
+COOLIFY_USE_DOCKERFILE=true
+COOLIFY_SKIP_NIXPACKS=true
