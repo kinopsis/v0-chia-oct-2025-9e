@@ -15,7 +15,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Build the application
+# Build the application with standalone output
 RUN pnpm run build
 
 # Production image, copy all the files and run next
@@ -47,9 +47,13 @@ EXPOSE 3000
 # Environment variables for production
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV NEXT_PRIVATE_STANDALONE=true
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Create server.js for standalone mode if it doesn't exist
+RUN echo 'const { createServer } = require("http");\nconst { parse } = require("url");\nconst next = require("next");\n\nconst dev = process.env.NODE_ENV !== "production";\nconst hostname = "localhost";\nconst port = process.env.PORT || 3000;\n\nconst app = next({ dev, hostname, port });\nconst handle = app.getRequestHandler();\n\napp.prepare().then(() => {\n  createServer(async (req, res) => {\n    try {\n      const parsedUrl = parse(req.url, true);\n      const { pathname, query } = parsedUrl;\n\n      await handle(req, res, parsedUrl);\n    } catch (err) {\n      console.error("Error occurred handling", req.url, err);\n      res.statusCode = 500;\n      res.end("internal server error");\n    }\n  }).listen(port, (err) => {\n    if (err) throw err;\n    console.log(`> Ready on http://${hostname}:${port}`);\n  });\n});' > server.js
 
 CMD ["node", "server.js"]
