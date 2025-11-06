@@ -23,8 +23,32 @@ You are using Node.js 18.20.5. For Next.js, Node.js version ">=20.9.0" is requir
 
 ### 1. Dockerfile Optimizado para Coolify
 
-Se ha actualizado el Dockerfile con variables de entorno específicas para forzar el uso del Dockerfile en lugar de Nixpacks:
+Se ha corregido el Dockerfile para resolver el error de "pnpm: not found". El problema era que pnpm se instalaba solo en el stage `deps` pero no estaba disponible en el stage `builder`.
 
+**Corrección clave:**
+```dockerfile
+# Use Node.js 22 for better compatibility
+FROM node:22-alpine AS base
+
+# Install pnpm globally in base image for all stages
+RUN npm install -g pnpm
+
+# Install dependencies only when needed
+FROM base AS deps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --no-frozen-lockfile
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+# Build the application
+RUN pnpm run build
+```
+
+**Variables de entorno para forzar uso de Dockerfile en lugar de Nixpacks:**
 ```dockerfile
 # Force Coolify to use this Dockerfile instead of Nixpacks
 ENV COOLIFY_USE_DOCKERFILE=true
@@ -111,6 +135,9 @@ node server.js
 > my-v0-project@0.1.0 build /app
 > next build
 
+# pnpm debe estar disponible en todos los stages
+> pnpm run build
+
 # Build exitoso sin errores de versión
 Done in XX.Xs
 ```
@@ -120,6 +147,10 @@ Done in XX.Xs
 ```
 # Error de versión (indicativo de Nixpacks)
 You are using Node.js 18.20.5. For Next.js, Node.js version ">=20.9.0" is required.
+
+# Error de pnpm no encontrado (stage incorrecto)
+/bin/sh: pnpm: not found
+exit code: 127
 ```
 
 ## 🔧 Solución Alternativa (si persiste el error)
