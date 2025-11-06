@@ -22,3 +22,8 @@ NEXT_TELEMETRY_DISABLED=1
 # Coolify-specific optimizations
 COOLIFY_USE_DOCKERFILE=true
 COOLIFY_SKIP_NIXPACKS=true
+
+# Additional healthcheck configuration to avoid template parsing errors
+COOLIFY_HEALTHCHECK_TIMEOUT=60
+COOLIFY_HEALTHCHECK_INTERVAL=30
+COOLIFY_HEALTHCHECK_RETRIES=5
