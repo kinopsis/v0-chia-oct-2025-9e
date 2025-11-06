@@ -1,4 +1,3 @@
-# Use Node.js 22 for better compatibility
 FROM node:22-alpine AS base
 
 # Install pnpm globally in base image for all stages
@@ -49,9 +48,9 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 ENV NEXT_PRIVATE_STANDALONE=true
 
-# Health check - optimized for Coolify
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl -f --max-time 5 http://localhost:3000/api/health || exit 1
+# Health check - compatible with Coolify to avoid template parsing errors
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=5 \
+  CMD curl -f --max-time 3 http://localhost:3000/api/health || exit 1
 
 # Create server.js for standalone mode if it doesn't exist
 RUN echo 'const { createServer } = require("http");\nconst { parse } = require("url");\nconst next = require("next");\n\nconst dev = process.env.NODE_ENV !== "production";\nconst hostname = "localhost";\nconst port = process.env.PORT || 3000;\n\nconst app = next({ dev, hostname, port });\nconst handle = app.getRequestHandler();\n\napp.prepare().then(() => {\n  createServer(async (req, res) => {\n    try {\n      const parsedUrl = parse(req.url, true);\n      const { pathname, query } = parsedUrl;\n\n      await handle(req, res, parsedUrl);\n    } catch (err) {\n      console.error("Error occurred handling", req.url, err);\n      res.statusCode = 500;\n      res.end("internal server error");\n    }\n  }).listen(port, (err) => {\n    if (err) throw err;\n    console.log(`> Ready on http://${hostname}:${port}`);\n  });\n});' > server.js
