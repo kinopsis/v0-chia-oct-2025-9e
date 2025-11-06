@@ -1,4 +1,3 @@
-# Use Node.js 22 for better compatibility
 FROM node:22-alpine AS base
 
 # Install pnpm globally in base image for all stages
