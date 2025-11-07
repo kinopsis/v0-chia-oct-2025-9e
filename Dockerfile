@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 # =============================================================================
 # SECURITY-HARDENED DOCKERFILE FOR COOLIFY DEPLOYMENT
 # =============================================================================
 # Security Hardening: Pin specific Node.js version with Alpine 3.20 for security updates
 FROM node:22.13.0-alpine3.20 AS base
+=======
+FROM node:22-alpine AS base
+>>>>>>> 55545e1346455d0a9b2e0da479e331fc01759b02
 
 # Security: Install pnpm only in builder stage to minimize exposure
 # Security: Remove build tools immediately after use to reduce attack surface
