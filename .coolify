@@ -1,49 +1,226 @@
-# Coolify Configuration File
-# Force Dockerfile usage over Nixpacks to ensure Node.js 22 compatibility
+# =============================================================================
+# 🔒 COOLIFY SECURITY-ENHANCED CONFIGURATION FILE
+# =============================================================================
+# Comprehensive security configurations and optimization settings for secure deployment
+# Based on security analysis findings and best practices
 
-# Force Dockerfile build - Critical for Node.js 22 enforcement
+# =============================================================================
+# 🔐 SECURITY CONFIGURATIONS
+# =============================================================================
+
+# Force Dockerfile usage with security validation
 FORCE_DOCKERFILE=true
 USE_CUSTOM_DOCKERFILE=true
 CUSTOM_DOCKERFILE_PATH=Dockerfile
+COOLIFY_USE_DOCKERFILE=true
+COOLIFY_FORCE_DOCKERFILE=true
+SECURE_DOCKERFILE_VALIDATION=true
 
-# Disable Nixpacks completely
+# Disable Nixpacks completely for security control
 SKIP_NIXPACKS=true
 NIXPACKS_DISABLE=true
 DISABLE_NIXPACKS=true
+COOLIFY_SKIP_NIXPACKS=true
+COOLIFY_DISABLE_NIXPACKS=true
 
-# Build configuration for Next.js 16 standalone mode
-BUILD_COMMAND=pnpm install && pnpm run build
-START_COMMAND=node server.js
-BUILD_DIRECTORY=/app
-PORT=3000
+# =============================================================================
+# 🛡️ SECURITY HEADERS AND COMMUNICATION
+# =============================================================================
+
+# SSL/TLS requirements
+FORCE_SSL=true
+REQUIRE_HTTPS=true
+SECURE_PROTOCOLS_ONLY=true
+HSTS_MAX_AGE=31536000
+HSTS_INCLUDE_SUBDOMAINS=true
+HSTS_PRELOAD=true
+
+# Security headers enforcement
+SECURITY_HEADERS_ENABLED=true
+CONTENT_SECURITY_POLICY="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+X_CONTENT_TYPE_OPTIONS=nosniff
+X_FRAME_OPTIONS=DENY
+X_XSS_PROTECTION="1; mode=block"
+REFERRER_POLICY=strict-origin-when-cross-origin
+PERMISSIONS_POLICY="geolocation=(), microphone=(), camera=()"
+
+# =============================================================================
+# 🚀 RESOURCE LIMITS AND PERFORMANCE
+# =============================================================================
+
+# Resource limits for security and performance
+MEMORY_LIMIT=4096
+CPU_LIMIT=2
+MAX_CONCURRENT_REQUESTS=100
+REQUEST_TIMEOUT=30000
+IDLE_TIMEOUT=60000
+
+# Security resource constraints
+SECURITY_MEMORY_LIMIT=2048
+SECURITY_CPU_LIMIT=1
+MAX_FILE_UPLOAD_SIZE=10485760
+MAX_REQUEST_SIZE=1048576
+
+# =============================================================================
+# 🏥 SECURE HEALTHCHECK CONFIGURATION
+# =============================================================================
+
+# Enhanced healthcheck settings
 HEALTHCHECK_URL=/api/health
 HEALTHCHECK_TIMEOUT=40
 HEALTHCHECK_INTERVAL=30
 HEALTHCHECK_RETRIES=5
+HEALTHCHECK_START_PERIOD=40
 
-# Environment configuration
-NODE_ENV=production
-NEXT_TELEMETRY_DISABLED=1
-NEXT_PRIVATE_STANDALONE=true
+# Security-focused healthcheck configuration
+SECURE_HEALTHCHECK=true
+HEALTHCHECK_REQUIRE_AUTH=false
+HEALTHCHECK_RESPONSE_VALIDATION=true
+HEALTHCHECK_MONITORING_ENABLED=true
 
-# Coolify-specific optimizations - Force Dockerfile usage
-COOLIFY_USE_DOCKERFILE=true
-COOLIFY_SKIP_NIXPACKS=true
-COOLIFY_FORCE_DOCKERFILE=true
-COOLIFY_DISABLE_NIXPACKS=true
-
-# Additional healthcheck configuration to avoid template parsing errors
+# Coolify-specific healthcheck optimization
 COOLIFY_HEALTHCHECK_TIMEOUT=40
 COOLIFY_HEALTHCHECK_INTERVAL=30
 COOLIFY_HEALTHCHECK_RETRIES=5
 COOLIFY_HEALTHCHECK_START_PERIOD=40
 
-# Node.js 22 specific configuration
+# =============================================================================
+# 🔍 SECURITY MONITORING AND AUDIT
+# =============================================================================
+
+# Security monitoring configurations
+SECURITY_MONITORING_ENABLED=true
+AUDIT_LOGGING_ENABLED=true
+SECURITY_EVENT_LOGGING=true
+FAILED_LOGIN_ATTEMPTS_LOGGING=true
+
+# Security metrics collection
+SECURITY_METRICS_COLLECTION=true
+REQUEST_RATE_LIMITING=true
+ABNORMAL_ACCESS_PATTERN_DETECTION=true
+
+# Security scanning integration
+SECURITY_SCAN_ON_BUILD=true
+VULNERABILITY_SCANNING_ENABLED=true
+DEPENDENCY_CHECK_ENABLED=true
+
+# =============================================================================
+# 🏗️ COOLIFY OPTIMIZATION AND SECURITY
+# =============================================================================
+
+# Optimized build commands for security scanning
+BUILD_COMMAND=pnpm install && pnpm run build && npm audit --audit-level=moderate
+START_COMMAND=node server.js
+BUILD_DIRECTORY=/app
+BUILD_TIMEOUT=600000
+
+# Security-focused environment variable handling
+SECURE_ENV_VARS=true
+ENV_VAR_ENCRYPTION=true
+SECRET_MANAGEMENT_INTEGRATION=true
+
+# Optimized timeouts for security processes
+BUILD_TIMEOUT=600000
+DEPLOYMENT_TIMEOUT=300000
+SECURITY_SCAN_TIMEOUT=300000
+HEALTHCHECK_TIMEOUT=40000
+
+# =============================================================================
+# 📊 SECURITY-FOCUSED LOGGING
+# =============================================================================
+
+# Enhanced logging configuration
+LOG_LEVEL=info
+SECURITY_LOG_LEVEL=debug
+AUDIT_LOG_LEVEL=info
+ERROR_LOG_LEVEL=error
+
+# Security event logging
+LOG_SECURITY_EVENTS=true
+LOG_AUTH_ATTEMPTS=true
+LOG_ACCESS_ATTEMPTS=true
+LOG_CONFIGURATION_CHANGES=true
+
+# Log retention and rotation
+LOG_RETENTION_DAYS=90
+LOG_ROTATION_ENABLED=true
+LOG_COMPRESSION_ENABLED=true
+
+# =============================================================================
+# 🚀 DEPLOYMENT SECURITY
+# =============================================================================
+
+# Secure deployment pipeline
+SECURE_DEPLOYMENT_PIPELINE=true
+DEPLOYMENT_VALIDATION_ENABLED=true
+PRE_DEPLOYMENT_SECURITY_CHECK=true
+POST_DEPLOYMENT_SECURITY_VERIFICATION=true
+
+# Deployment security checks
+VALIDATE_DOCKERFILE_SECURITY=true
+CHECK_FOR_HARD_CODED_SECRETS=true
+VALIDATE_ENVIRONMENT_CONFIG=true
+SECURITY_COMPLIANCE_CHECK=true
+
+# =============================================================================
+# ⚠️ ERROR HANDLING AND RECOVERY
+# =============================================================================
+
+# Security-focused error handling
+SECURE_ERROR_HANDLING=true
+HIDE_SENSITIVE_ERROR_INFO=true
+CUSTOM_ERROR_PAGES=true
+ERROR_RATE_MONITORING=true
+
+# Automatic security updates
+AUTO_SECURITY_UPDATES=true
+SECURITY_PATCH_AUTO_APPLY=true
+CRITICAL_VULNERABILITY_ALERTS=true
+
+# Security alert notifications
+SECURITY_ALERT_EMAILS=true
+SECURITY_ALERT_WEBHOOKS=true
+CRITICAL_SECURITY_ALERTS=true
+SECURITY_INCIDENT_NOTIFICATIONS=true
+
+# Secure rollback procedures
+SECURE_ROLLBACK_ENABLED=true
+ROLLBACK_ON_SECURITY_FAILURE=true
+PREVIOUS_VERSION_SECURITY_CHECK=true
+ROLLBACK_AUDIT_LOGGING=true
+
+# =============================================================================
+# 🔧 NODE.JS 22 SPECIFIC SECURITY CONFIGURATION
+# =============================================================================
+
+# Node.js 22 specific configuration with security focus
 NODE_VERSION=22
 FORCE_NODE_VERSION=22
 USE_NODE_22=true
+NODE_SECURITY_UPDATES=true
 
-# Security and performance
+# =============================================================================
+# 🛠️ ADDITIONAL SECURITY ENHANCEMENTS
+# =============================================================================
+
+# General environment configuration with security focus
+NODE_ENV=production
+NEXT_TELEMETRY_DISABLED=1
+NEXT_PRIVATE_STANDALONE=true
+SECURE_COOKIES=true
+SESSION_TIMEOUT=3600
+
+# Port and network security
+PORT=3000
+SECURE_PORT_CONFIG=true
+NETWORK_ISOLATION_ENABLED=true
+
+# Non-root user security
 NON_ROOT_USER=true
+<<<<<<< HEAD
+SECURE_USER_PERMISSIONS=true
+FILE_PERMISSIONS_HARDENING=true
+=======
 MEMORY_LIMIT=4096
 CPU_LIMIT=2
+>>>>>>> 55545e1346455d0a9b2e0da479e331fc01759b02
