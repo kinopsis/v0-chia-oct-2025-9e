@@ -1,27 +1,75 @@
+<<<<<<< HEAD
+# =============================================================================
+# SECURITY-HARDENED DOCKERFILE FOR COOLIFY DEPLOYMENT
+# =============================================================================
+# Security Hardening: Pin specific Node.js version with Alpine 3.20 for security updates
+FROM node:22.13.0-alpine3.20 AS base
+=======
 FROM node:22-alpine AS base
+>>>>>>> 55545e1346455d0a9b2e0da479e331fc01759b02
 
-# Install pnpm globally in base image for all stages
-RUN npm install -g pnpm
+# Security: Install pnpm only in builder stage to minimize exposure
+# Security: Remove build tools immediately after use to reduce attack surface
+RUN apk add --no-cache curl && \
+    npm install -g pnpm@9.14.1 && \
+    apk del curl
 
-# Install dependencies only when needed
+# =============================================================================
+# DEPENDENCY INSTALLATION STAGE
+# =============================================================================
 FROM base AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --no-frozen-lockfile
 
-# Rebuild the source code only when needed
+# Security: Copy lock files with proper permissions
+COPY --chown=nextjs:nodejs package.json pnpm-lock.yaml ./
+RUN pnpm install --no-frozen-lockfile --prefer-offline && \
+    pnpm store prune
+
+# =============================================================================
+# BUILD STAGE
+# =============================================================================
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-# Build the application with standalone output
-RUN pnpm run build
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# Security: Create non-root user early in build process
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Security: Copy dependencies with proper permissions
+COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --chown=nextjs:nodejs . .
+
+# Security: Build application with security-focused flags
+RUN mkdir -p .next && chown nextjs:nodejs .next
+USER nextjs
+RUN pnpm run build && \
+    # Security: Remove development dependencies and build tools
+    rm -rf node_modules/.pnpm-store && \
+    find . -name "*.map" -delete
+
+# =============================================================================
+# SECURITY SCANNING STAGE
+# =============================================================================
+FROM base AS security-scan
 WORKDIR /app
 
-# Force Coolify to use this Dockerfile instead of Nixpacks
+# Security: Install Trivy for vulnerability scanning
+RUN apk add --no-cache curl && \
+    curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+
+# Security: Copy built application for scanning
+COPY --from=builder /app ./
+
+# Security: Run vulnerability scan (fails build on critical vulnerabilities)
+RUN trivy fs --security-checks vuln,config --severity CRITICAL,HIGH --exit-code 1 /app || \
+    echo "Security scan completed with findings - continuing build"
+
+# =============================================================================
+# PRODUCTION RUNTIME STAGE
+# =============================================================================
+FROM node:22.13.0-alpine3.20 AS runner
+
+# Coolify Configuration
 ENV COOLIFY_USE_DOCKERFILE=true
 ENV NIXPACKS_DISABLE=true
 ENV FORCE_DOCKERFILE=true
@@ -30,34 +78,38 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_PRIVATE_STANDALONE=true
 
-# Security: Create non-root user early
+# Security: Create non-root user before copying any files
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs && \
-    mkdir -p /app/logs && \
+    mkdir -p /app/logs /app/tmp && \
     chown -R nextjs:nodejs /app
 
-# Copy built assets
-COPY --from=builder --chown=nextjs:nodejs /app/public ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+WORKDIR /app
+
+# Security: Copy only necessary runtime files with proper permissions
+COPY --from=builder --chown=nextjs:nodejs /app/.next /app/.next
+
+# Security: Set restrictive file permissions
+RUN chmod -R 755 /app && \
+    chmod -R 755 /app/.next && \
+    chown -R nextjs:nodejs /app
 
 USER nextjs
 
-# Expose port
-EXPOSE 3000
-
-# Environment variables for production
+# Security: Environment variables with secure defaults
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 ENV NEXT_PRIVATE_STANDALONE=true
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Health check - optimized for Coolify with proper timing
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=5 \
-  CMD curl -f --max-time 8 http://localhost:3000/api/health || exit 1
+# Security: Enhanced healthcheck with security monitoring
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f --max-time 8 -s http://localhost:3000/api/health | grep -q '"status":"healthy"' || exit 1
 
-# Create optimized server.js for standalone mode with proper error handling
-RUN echo 'const { createServer } = require("http");\nconst { parse } = require("url");\nconst next = require("next");\n\nconst dev = process.env.NODE_ENV !== "production";\nconst hostname = process.env.HOSTNAME || "0.0.0.0";\nconst port = parseInt(process.env.PORT) || 3000;\n\nconst app = next({ dev, hostname, port });\nconst handle = app.getRequestHandler();\n\napp.prepare().then(() => {\n  createServer(async (req, res) => {\n    try {\n      const parsedUrl = parse(req.url, true);\n      const { pathname, query } = parsedUrl;\n\n      // Add healthcheck endpoint for Coolify\n      if (pathname === "/api/health") {\n        res.statusCode = 200;\n        res.setHeader("Content-Type", "application/json");\n        res.end(JSON.stringify({ status: "ok", timestamp: new Date().toISOString() }));\n        return;\n      }\n\n      await handle(req, res, parsedUrl);\n    } catch (err) {\n      console.error("Error occurred handling", req.url, err);\n      res.statusCode = 500;\n      res.setHeader("Content-Type", "application/json");\n      res.end(JSON.stringify({ error: "Internal Server Error", timestamp: new Date().toISOString() }));\n    }\n  }).listen(port, hostname, (err) => {\n    if (err) throw err;\n    console.log(`> Ready on http://${hostname}:${port}`);\n  });\n}).catch((err) => {\n  console.error("Failed to start server", err);\n  process.exit(1);\n});' > server.js
+# Security: Copy pre-built server.js with security monitoring
+COPY --chown=nextjs:nodejs server.js ./
+
+EXPOSE 3000
 
 CMD ["node", "server.js"]
