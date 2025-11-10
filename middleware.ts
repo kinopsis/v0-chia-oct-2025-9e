@@ -1,3 +1,10 @@
+/**
+ * Legacy middleware used for Supabase auth session management.
+ * Next.js now recommends the `proxy.ts` convention. To keep behavior stable
+ * while silencing the deprecation warning, the logic is moved to `proxy.ts`
+ * and this file is kept as a thin delegator (or can be removed once fully migrated).
+ */
+
 import type { NextRequest } from "next/server"
 import { updateSession } from "./lib/supabase/middleware"
 
@@ -7,14 +14,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - admin-test (test page for admin filters)
-     * Feel free to modify this pattern to include more paths.
-     */
     "/((?!_next/static|_next/image|favicon.ico|admin-test|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 }
