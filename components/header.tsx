@@ -3,6 +3,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useTheme } from "next-themes"
+import LightLogo from "@/public/ligth-logo.png"
+import DarkLogo from "@/public/dark-logo-chia.png"
 import { Moon, Sun, Menu, LogIn, Accessibility } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
@@ -33,7 +35,7 @@ export function Header() {
 
   const isDark = resolvedTheme === "dark"
 
-  const logoSrc = isDark ? "/dark-logo-chia.png" : "/ligth-logo.png"
+  const logoSrc = isDark ? DarkLogo : LightLogo
   const logoAlt = "Alcaldía de Chía - Portal Ciudadano"
 
   const handleToggleTheme = () => {
