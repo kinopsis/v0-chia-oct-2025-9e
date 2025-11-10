@@ -2,9 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ChatWidget } from "@/components/chat-widget"
 import { AccessibilityMenu } from "@/components/accessibility-menu"
 import {
   Building2,
@@ -23,8 +21,6 @@ import {
 export default function Page() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
-
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-primary/10 via-background to-accent/10 py-20 md:py-32">
@@ -313,7 +309,6 @@ export default function Page() {
       </main>
 
       <Footer />
-      <ChatWidget />
       <AccessibilityMenu />
     </div>
   )
