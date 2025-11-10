@@ -154,6 +154,20 @@
   --shadow-x: var(--shadow-x);
 }
 
+/* Overrides para asegurar que el tema de la app domina sobre estilos globales externos (p.ej. CONVOCORE) */
+
+/* Modo claro: cuando el root NO tiene .dark */
+html:not(.dark) body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* Modo oscuro: cuando el root tiene .dark */
+html.dark body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

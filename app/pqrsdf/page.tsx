@@ -1,4 +1,3 @@
-import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,7 +7,6 @@ import Link from "next/link"
 export default function Page() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
       <main className="flex-1">
         {/* Hero Section */}
         <div className="border-b border-border bg-gradient-to-br from-primary/10 via-background to-background py-12">
