@@ -2,9 +2,10 @@
 
 import Link from "next/link"
 import { useTheme } from "next-themes"
-import { Moon, Sun, Menu, LogIn } from "lucide-react"
+import { Moon, Sun, Menu, LogIn, Accessibility } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
+import { AccessibilityMenu } from "@/components/accessibility-menu" // Importación del menú de accesibilidad integrado en el header
 
 export function Header() {
   const { theme, setTheme } = useTheme()
@@ -60,21 +61,50 @@ export function Header() {
             </Button>
           </Link>
 
+          {/* Ícono de accesibilidad fijo en el header, a la izquierda del toggle de dark mode (visible en desktop y mobile) */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="ml-2"
+              onClick={() => {
+                document.dispatchEvent(new CustomEvent("toggle-accessibility-menu"))
+              }}
+              aria-label="Abrir menú de accesibilidad"
+              title="Opciones de accesibilidad"
+            >
+              <Accessibility className="h-5 w-5" aria-hidden="true" />
+              <span className="sr-only">Abrir opciones de accesibilidad</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="ml-1"
+              aria-label={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+            >
+              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Cambiar tema</span>
+            </Button>
+          </div>
+        </nav>
+
+        {/* Mobile actions: accesibilidad + dark mode + menú */}
+        <div className="flex md:hidden items-center gap-2">
+          {/* Ícono de accesibilidad también visible en mobile, antes del toggle y del menú */}
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="ml-2"
-            aria-label={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+            onClick={() => {
+              document.dispatchEvent(new CustomEvent("toggle-accessibility-menu"))
+            }}
+            aria-label="Abrir menú de accesibilidad"
+            title="Opciones de accesibilidad"
           >
-            <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Cambiar tema</span>
+            <Accessibility className="h-5 w-5" aria-hidden="true" />
+            <span className="sr-only">Abrir opciones de accesibilidad</span>
           </Button>
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <div className="flex md:hidden items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
