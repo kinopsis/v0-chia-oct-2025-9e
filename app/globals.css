@@ -3,40 +3,107 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Typography: Font Face Definitions */
+/* Alcaldía de Chía brand fonts - font files expected under /public/fonts */
+/* Normalized to use existing .ttf files and avoid 404s. */
+@font-face {
+  font-family: "Futura Light";
+  src:
+    url("/fonts/Futura-Light.woff2") format("woff2"),
+    url("/fonts/Futura light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Futura Md BT";
+  src:
+    url("/fonts/Futura-Md-BT.woff2") format("woff2"),
+    url("/fonts/Futura Md BT Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Futura Bold";
+  src:
+    url("/fonts/Futura-Bold.woff2") format("woff2"),
+    url("/fonts/Futura Md BT Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Color System */
+/* Alcaldía de Chía brand tokens */
 :root {
+  /* Brand font families */
+  --font-futura-light: "Futura Light", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-futura-md: "Futura Md BT", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-futura-bold: "Futura Bold", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Core background & foreground */
   --background: #ffffff;
   --foreground: #171717;
   --card: #ffffff;
   --card-foreground: #171717;
   --popover: #ffffff;
   --popover-foreground: #171717;
-  --primary: rgb(19, 148, 41);
+
+  /* Brand primary (Alcaldía de Chía green) */
+  --color-primary: #009540;
+  --color-primary-dark: #007b36;
+  --color-primary-soft: #e3f6eb;
+
+  /* Brand complementary (Alcaldía de Chía yellow) */
+  --color-accent: #ffdc00;
+  --color-accent-soft: #fff6b8;
+
+  /* Semantic colors harmonized with brand */
+  --color-success: #009540;
+  --color-success-soft: #e3f6eb;
+  --color-error: #dc2626;
+  --color-error-soft: #fee2e2;
+  --color-warning: #f59e0b;
+  --color-warning-soft: #fef3c7;
+  --color-info: #2563eb;
+  --color-info-soft: #dbeafe;
+
+  /* Legacy-compatible tokens mapped to brand system */
+  --primary: var(--color-primary);
   --primary-foreground: #ffffff;
   --secondary: #f3f4f6;
   --secondary-foreground: #1f2937;
   --muted: #f9fafb;
   --muted-foreground: #6b7280;
-  --accent: #dbeafe;
-  --accent-foreground: #1e3a8a;
-  --destructive: #ef4444;
+  --accent: var(--color-accent-soft);
+  --accent-foreground: #1f2937;
+  --destructive: var(--color-error);
   --destructive-foreground: #ffffff;
   --border: #e5e7eb;
   --input: #e5e7eb;
-  --ring: #2563eb;
-  --chart-1: #3b82f6;
+  --ring: var(--color-primary);
+  --chart-1: var(--color-primary);
   --chart-2: #2563eb;
   --chart-3: #1d4ed8;
   --chart-4: #1e40af;
-  --chart-5: #1e3a8a;
+  --chart-5: #111827;
+
   --radius: 0.5rem;
+
+  /* Sidebar + surfaces aligned with brand */
   --sidebar: #f9fafb;
   --sidebar-foreground: #171717;
-  --sidebar-primary: #2563eb;
+  --sidebar-primary: var(--color-primary);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #dbeafe;
-  --sidebar-accent-foreground: #1e3a8a;
+  --sidebar-accent: var(--color-accent-soft);
+  --sidebar-accent-foreground: #1f2937;
   --sidebar-border: #e5e7eb;
-  --sidebar-ring: #2563eb;
+  --sidebar-ring: var(--color-primary);
+
+  /* Shadow system */
   --shadow-x: 0px;
   --shadow-y: 1px;
   --shadow-blur: 3px;
@@ -46,38 +113,53 @@
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --card: #171717;
-  --card-foreground: #ededed;
-  --popover: #171717;
-  --popover-foreground: #ededed;
-  --primary: rgb(19, 147, 41);
+  --background: #000000;
+  --foreground: #e5e7eb;
+  --card: #020817;
+  --card-foreground: #e5e7eb;
+  --popover: #020817;
+  --popover-foreground: #e5e7eb;
+
+  /* Dark mode brand adaptations */
+  --color-primary: #00b44d;
+  --color-primary-dark: #009540;
+  --color-primary-soft: #052e16;
+
+  --color-accent: #ffdc00;
+  --color-accent-soft: #3f3a16;
+
+  --color-success: #22c55e;
+  --color-success-soft: #052e16;
+  --color-error: #f97316;
+  --color-error-soft: #431407;
+  --color-warning: #facc15;
+  --color-warning-soft: #3f3a16;
+  --color-info: #60a5fa;
+  --color-info-soft: #111827;
+
+  --primary: var(--color-primary);
   --primary-foreground: #ffffff;
-  --secondary: #262626;
-  --secondary-foreground: #ededed;
-  --muted: #1f1f1f;
-  --muted-foreground: #a3a3a3;
-  --accent: #1e3a8a;
-  --accent-foreground: #bfdbfe;
+  --secondary: #111827;
+  --secondary-foreground: #e5e7eb;
+  --muted: #020817;
+  --muted-foreground: #9ca3af;
+  --accent: var(--color-accent-soft);
+  --accent-foreground: #e5e7eb;
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  --border: #2a2a2a;
-  --input: #2a2a2a;
-  --ring: #3b82f6;
-  --chart-1: #60a5fa;
-  --chart-2: #3b82f6;
-  --chart-3: #2563eb;
-  --chart-4: #1d4ed8;
-  --chart-5: #1e40af;
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #ededed;
-  --sidebar-primary: #3b82f6;
+  --border: #111827;
+  --input: #111827;
+  --ring: var(--color-primary);
+
+  --sidebar: #020817;
+  --sidebar-foreground: #e5e7eb;
+  --sidebar-primary: var(--color-primary);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e3a8a;
-  --sidebar-accent-foreground: #bfdbfe;
-  --sidebar-border: #2a2a2a;
-  --sidebar-ring: #3b82f6;
+  --sidebar-accent: #111827;
+  --sidebar-accent-foreground: #e5e7eb;
+  --sidebar-border: #111827;
+  --sidebar-ring: var(--color-primary);
+
   --shadow-x: 0px;
   --shadow-y: 1px;
   --shadow-blur: 3px;
@@ -87,7 +169,8 @@
 }
 
 @theme inline {
-  --font-sans: "Acme", "Acme Fallback";
+  /* Typography: Global Defaults */
+  --font-sans: var(--font-futura-light);
   --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -125,7 +208,6 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-serif: "Arvo", "Arvo Fallback";
   /* computed shadow variables below - do not modify */
   --shadow-2xs: var(--shadow-x) var(--shadow-y)
     color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
@@ -173,7 +255,166 @@ html.dark body {
     @apply border-border outline-ring/50;
   }
   body {
+    /* Typography: Global Defaults */
+    font-family: var(--font-futura-light);
     @apply bg-background text-foreground;
+  }
+
+  /* Typography: Utility Classes */
+  .heading-xl {
+    font-family: var(--font-futura-bold);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    font-size: 2rem;
+  }
+
+  .heading-lg {
+    font-family: var(--font-futura-bold);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    font-size: 1.5rem;
+  }
+
+  .heading-md {
+    font-family: var(--font-futura-md);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    font-size: 1.25rem;
+  }
+
+  .heading-sm {
+    font-family: var(--font-futura-md);
+    font-weight: 500;
+    line-height: 1.4;
+    font-size: 1.125rem;
+  }
+
+  .text-body {
+    font-family: var(--font-futura-light);
+    font-weight: 300;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .text-label {
+    font-family: var(--font-futura-md);
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .text-caption {
+    font-family: var(--font-futura-light);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+  }
+
+  @media (min-width: 768px) {
+    .heading-xl {
+      font-size: 2.5rem;
+    }
+    .heading-lg {
+      font-size: 2rem;
+    }
+    .heading-md {
+      font-size: 1.5rem;
+    }
+    .heading-sm {
+      font-size: 1.25rem;
+    }
+    .text-body {
+      font-size: 1rem;
+    }
+  }
+
+  /* Base link styles aligned with Alcaldía de Chía brand */
+  a {
+    color: var(--color-primary);
+    text-decoration-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+    text-underline-offset: 3px;
+    transition: color 0.18s ease, text-decoration-color 0.18s ease, background-color 0.18s ease;
+  }
+
+  a:hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Alcaldía de Chía brand: primary button */
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border-radius: 9999px;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-futura-md);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+    box-shadow: 0 6px 14px rgba(0, 149, 64, 0.18);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+  }
+
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
+
+  .btn-primary:disabled {
+    background-color: var(--color-primary-soft);
+    color: #9ca3af;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    background-color: #ffffff;
+    color: var(--color-primary);
+    border-radius: 9999px;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-futura-md);
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: all 0.18s ease;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-accent-soft);
+    color: #111827;
+    border-color: var(--color-accent);
+  }
+
+  /* Form controls using primary for focus */
+  input,
+  select,
+  textarea {
+    font-family: var(--font-futura-light);
+    border-radius: 0.5rem;
+    border-color: var(--border);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+    border-color: var(--color-primary);
   }
 
   /* Improved focus visibility for accessibility */
