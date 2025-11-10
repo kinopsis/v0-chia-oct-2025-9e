@@ -3,6 +3,9 @@ import type { Metadata } from "next"
 
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ConvocoreWidget } from "@/components/convocore-widget"
+import { Header } from "@/components/header"
+import { AccessibilityMenu } from "@/components/accessibility-menu"
 import "./globals.css"
 
 import { Geist_Mono, Geist as V0_Font_Geist, Geist_Mono as V0_Font_Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
@@ -28,7 +31,13 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className={`font-serif antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {/* Header fijo con ícono de accesibilidad y toggle de dark mode */}
+          <Header />
+          {/* Panel de accesibilidad global controlado desde el ícono fijo del header */}
+          <AccessibilityMenu />
           {children}
+          {/* CONVOCORE chat widget available across public layout */}
+          <ConvocoreWidget />
         </ThemeProvider>
         <Analytics />
       </body>

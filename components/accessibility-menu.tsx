@@ -67,6 +67,19 @@ export function AccessibilityMenu() {
     localStorage.removeItem("accessibility-contrast")
   }
 
+  // Escucha global para abrir/cerrar el panel desde el ícono fijo del header
+  useEffect(() => {
+    const handleToggle = () => {
+      setIsOpen((prev) => !prev)
+    }
+
+    document.addEventListener("toggle-accessibility-menu", handleToggle)
+
+    return () => {
+      document.removeEventListener("toggle-accessibility-menu", handleToggle)
+    }
+  }, [])
+
   useEffect(() => {
     if (!isOpen) return
 
@@ -88,21 +101,10 @@ export function AccessibilityMenu() {
 
   return (
     <>
-      {/* Floating Button */}
-      {!isOpen && (
-        <Button
-          size="icon"
-          className="fixed bottom-24 right-6 h-16 w-16 rounded-full shadow-xl hover:scale-110 transition-all duration-200 z-40 text-primary-foreground border-4 border-primary-foreground/20 hover:border-primary-foreground/40 bg-[rgba(222,22,19,1)]"
-          onClick={() => setIsOpen(true)}
-          aria-label="Abrir menú de accesibilidad"
-          title="Opciones de accesibilidad"
-        >
-          <Accessibility className="h-7 w-7" aria-hidden="true" />
-          <span className="sr-only">Abrir opciones de accesibilidad</span>
-          <span className="absolute inset-0 rounded-full bg-primary animate-pulse opacity-30" aria-hidden="true" />
-        </Button>
-      )}
-
+      {/* Header-integrated trigger:
+          - El botón flotante fue eliminado.
+          - La apertura/cierre del panel ahora se controla exclusivamente
+            mediante el ícono fijo en el header usando el evento 'toggle-accessibility-menu'. */}
       {/* Accessibility Panel */}
       {isOpen && (
         <Card
