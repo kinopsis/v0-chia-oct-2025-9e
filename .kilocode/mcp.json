@@ -44,7 +44,7 @@
         "-y",
         "@supabase/mcp-server-supabase@0.5.5",
         "--access-token",
-        "sbp_95b9ce61482adcaeffafc5774ce15583125bbbff"
+        "xxxxxx"
       ],
       "alwaysAllow": [
         "search_docs",
