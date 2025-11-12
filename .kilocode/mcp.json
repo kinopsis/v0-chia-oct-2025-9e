@@ -7,7 +7,7 @@
         "@modelcontextprotocol/server-github"
       ],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "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"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "xxxxxxxx"
       },
       "disabled": false,
       "alwaysAllow": [
