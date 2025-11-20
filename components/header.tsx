@@ -5,26 +5,18 @@ import Image from "next/image"
 import { useTheme } from "next-themes"
 import { Moon, Sun, Menu, LogIn, Accessibility } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { AccessibilityMenu } from "@/components/accessibility-menu"
 
 export function Header() {
   const { theme, systemTheme, setTheme } = useTheme()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const [accessibilityMenuOpen, setAccessibilityMenuOpen] = useState(false)
+  const [isAccessibilityMenuOpen, setAccessibilityMenuOpen] = useState(false)
+  const accessibilityButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     setMounted(true)
-
-    const handleToggleAccessibility = () => {
-      setAccessibilityMenuOpen((prev) => !prev)
-    }
-
-    document.addEventListener("toggle-accessibility-menu", handleToggleAccessibility)
-    return () => {
-      document.removeEventListener("toggle-accessibility-menu", handleToggleAccessibility)
-    }
   }, [])
 
   const resolvedTheme = !mounted
@@ -130,9 +122,10 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* Acciones derecha desktop: login + accesibilidad + tema */}
-          <div className="hidden md:flex items-center gap-2 ml-4">
-            <Link href="/auth/login">
+          {/* Contenedor de acciones unificado para desktop y mobile */}
+          <div className="flex items-center gap-1 md:gap-2 ml-auto relative">
+            {/* Botón de Login (solo desktop) */}
+            <Link href="/auth/login" className="hidden md:block">
               <Button
                 variant={isDark ? "outline" : "secondary"}
                 size="sm"
@@ -147,49 +140,9 @@ export function Header() {
               </Button>
             </Link>
 
+            {/* Botón de Accesibilidad (unificado) */}
             <Button
-              variant="ghost"
-              size="icon"
-              className={
-                isDark
-                  ? "ml-1 text-foreground hover:text-primary"
-                  : "ml-1 text-white hover:text-yellow-300"
-              }
-              onClick={() => {
-                document.dispatchEvent(
-                  new CustomEvent("toggle-accessibility-menu")
-                )
-              }}
-              aria-label="Abrir menú de accesibilidad"
-              title="Opciones de accesibilidad"
-            >
-              <Accessibility className="h-5 w-5" aria-hidden="true" />
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleToggleTheme}
-              className={
-                isDark
-                  ? "ml-1 text-foreground hover:text-primary"
-                  : "ml-1 text-white hover:text-yellow-300"
-              }
-              aria-label={
-                isDark
-                  ? "Cambiar a modo claro"
-                  : "Cambiar a modo oscuro"
-              }
-            >
-              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Cambiar tema</span>
-            </Button>
-          </div>
-
-          {/* Acciones mobile: accesibilidad + tema + menú */}
-          <div className="flex md:hidden items-center gap-1 flex-shrink-0">
-            <Button
+              ref={accessibilityButtonRef}
               variant="ghost"
               size="icon"
               className={
@@ -197,30 +150,27 @@ export function Header() {
                   ? "text-foreground hover:text-primary"
                   : "text-white hover:text-yellow-300"
               }
-              onClick={() => {
-                document.dispatchEvent(
-                  new CustomEvent("toggle-accessibility-menu")
-                )
-              }}
+              onClick={() => setAccessibilityMenuOpen((prev) => !prev)}
               aria-label="Abrir menú de accesibilidad"
+              aria-expanded={isAccessibilityMenuOpen}
+              aria-controls="accessibility-menu"
               title="Opciones de accesibilidad"
             >
               <Accessibility className="h-5 w-5" aria-hidden="true" />
             </Button>
 
+            {/* Botón de Tema (unificado) */}
             <Button
               variant="ghost"
               size="icon"
+              onClick={handleToggleTheme}
               className={
                 isDark
                   ? "text-foreground hover:text-primary"
                   : "text-white hover:text-yellow-300"
               }
-              onClick={handleToggleTheme}
               aria-label={
-                isDark
-                  ? "Cambiar a modo claro"
-                  : "Cambiar a modo oscuro"
+                isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
               }
             >
               <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -228,13 +178,14 @@ export function Header() {
               <span className="sr-only">Cambiar tema</span>
             </Button>
 
+            {/* Menú de hamburguesa (solo mobile) */}
             <Button
               variant="ghost"
               size="icon"
               className={
                 isDark
-                  ? "text-foreground hover:text-primary"
-                  : "text-white hover:text-yellow-300"
+                  ? "md:hidden text-foreground hover:text-primary"
+                  : "md:hidden text-white hover:text-yellow-300"
               }
               onClick={() => setMobileMenuOpen((open) => !open)}
               aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -244,6 +195,13 @@ export function Header() {
               <Menu className="h-5 w-5" aria-hidden="true" />
               <span className="sr-only">Menú</span>
             </Button>
+
+            {/* Instancia única del menú de accesibilidad */}
+            <AccessibilityMenu
+              isOpen={isAccessibilityMenuOpen}
+              onClose={() => setAccessibilityMenuOpen(false)}
+              triggerRef={accessibilityButtonRef}
+            />
           </div>
         </div>
       </div>
@@ -321,19 +279,6 @@ export function Header() {
         </div>
       )}
 
-      {/* Contenedor fijo para el menú de accesibilidad:
-          - Siempre sobre el contenido.
-          - Anclado debajo del header sticky.
-          - No desplaza el layout principal. */}
-      <div
-        className="fixed left-1/2 -translate-x-1/2 mt-0 top-[72px] md:top-[84px] z-[60] max-w-full"
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        {accessibilityMenuOpen && (
-          <AccessibilityMenu />
-        )}
-      </div>
     </header>
   )
 }

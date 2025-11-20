@@ -13,7 +13,7 @@ export default async function UsuariosPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Gestión de Usuarios</h2>
           <p className="text-gray-600 dark:text-gray-400 mt-1">Administra los usuarios del sistema</p>

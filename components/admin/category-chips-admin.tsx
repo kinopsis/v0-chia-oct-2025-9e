@@ -65,7 +65,7 @@ export function CategoryChipsAdmin({ selected, onSelect, tramites }: CategoryChi
         aria-label="Mostrar todas las categorías"
       >
         Todas
-        <span className="ml-2 rounded-full bg-background px-2 py-0.5 text-xs font-semibold">{tramites.length}</span>
+        <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-semibold ${selected === null ? 'bg-white text-primary' : 'bg-background text-foreground'}`}>{tramites.length}</span>
       </Button>
       {categories.map((category) => {
         const Icon = category.icon
@@ -83,7 +83,7 @@ export function CategoryChipsAdmin({ selected, onSelect, tramites }: CategoryChi
           >
             <Icon className="h-4 w-4 mr-2" aria-hidden="true" />
             {category.name}
-            <span className="ml-2 rounded-full bg-background px-2 py-0.5 text-xs font-semibold">{count}</span>
+            <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-semibold ${isSelected ? 'bg-white text-primary' : 'bg-background text-foreground'}`}>{count}</span>
           </Button>
         )
       })}
