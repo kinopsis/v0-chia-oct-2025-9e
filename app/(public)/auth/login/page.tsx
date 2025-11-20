@@ -54,7 +54,7 @@ export default function LoginPage() {
             <div className="w-40 sm:w-48 flex justify-center">
               {/* Logo for light background (default / light theme) */}
               <Image
-                src="/ligth-logo.png"
+                src="/light-logo.png"
                 alt="Alcaldía de Chía - Logo oficial"
                 width={192}
                 height={72}

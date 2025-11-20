@@ -25,7 +25,7 @@ export function Header() {
 
   const isDark = resolvedTheme === "dark"
 
-  const logoSrc = isDark ? "/dark-logo-chia.png" : "/ligth-logo.png"
+
   const logoAlt = "Alcaldía de Chía - Portal Ciudadano"
 
   const handleToggleTheme = () => {
@@ -49,14 +49,24 @@ export function Header() {
             className="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
             aria-label="Ir al inicio - Alcaldía de Chía"
           >
-            <Image
-              src={logoSrc}
-              alt={logoAlt}
-              width={600}
-              height={140}
-              priority
-              className="h-16 w-auto object-contain md:h-20 lg:h-24 max-w-full"
-            />
+            <div className="relative flex items-center justify-center">
+              <Image
+                src="/light-logo.png"
+                alt={logoAlt}
+                width={600}
+                height={140}
+                priority
+                className="h-16 w-auto object-contain md:h-20 lg:h-24 max-w-full block dark:hidden"
+              />
+              <Image
+                src="/dark-logo-chia.png"
+                alt={logoAlt}
+                width={600}
+                height={140}
+                priority
+                className="h-16 w-auto object-contain md:h-20 lg:h-24 max-w-full hidden dark:block"
+              />
+            </div>
           </Link>
         </div>
       </div>
@@ -65,13 +75,9 @@ export function Header() {
       <div className="w-full h-2 bg-[#ffdc00]" aria-hidden="true" />
 
       {/* Barra de navegación principal */}
+      {/* Barra de navegación principal */}
       <div
-        className={[
-          "border-b border-border/60",
-          isDark
-            ? "bg-background/95"
-            : "bg-[#009540] text-white",
-        ].join(" ")}
+        className="border-b border-border/60 bg-[#009540] text-white dark:bg-background/95 dark:text-foreground transition-colors"
       >
         <div className="container mx-auto flex h-14 items-center justify-between px-4">
           {/* Navegación desktop centrada */}
@@ -82,41 +88,25 @@ export function Header() {
           >
             <Link
               href="/"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
             >
               Inicio
             </Link>
             <Link
               href="/tramites"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
             >
               Trámites y Servicios
             </Link>
             <Link
               href="/pqrsdf"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
             >
               Radicar PQRSDF
             </Link>
             <Link
               href="/#paco"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
             >
               Puntos PACO
             </Link>
@@ -127,13 +117,9 @@ export function Header() {
             {/* Botón de Login (solo desktop) */}
             <Link href="/auth/login" className="hidden md:block">
               <Button
-                variant={isDark ? "outline" : "secondary"}
+                variant="secondary"
                 size="sm"
-                className={
-                  isDark
-                    ? "bg-transparent"
-                    : "bg-white text-[#009540] hover:bg-yellow-300 hover:text-[#004b25] font-semibold"
-                }
+                className="bg-white text-[#009540] hover:bg-yellow-300 hover:text-[#004b25] font-semibold dark:bg-transparent dark:text-foreground dark:border dark:border-input dark:hover:bg-accent dark:hover:text-accent-foreground transition-colors"
               >
                 <LogIn className="h-4 w-4 mr-2" aria-hidden="true" />
                 <span>Ingresar</span>
@@ -145,11 +131,7 @@ export function Header() {
               ref={accessibilityButtonRef}
               variant="ghost"
               size="icon"
-              className={
-                isDark
-                  ? "text-foreground hover:text-primary"
-                  : "text-white hover:text-yellow-300"
-              }
+              className="text-white hover:text-yellow-300 dark:text-foreground dark:hover:text-primary transition-colors"
               onClick={() => setAccessibilityMenuOpen((prev) => !prev)}
               aria-label="Abrir menú de accesibilidad"
               aria-expanded={isAccessibilityMenuOpen}
@@ -164,11 +146,7 @@ export function Header() {
               variant="ghost"
               size="icon"
               onClick={handleToggleTheme}
-              className={
-                isDark
-                  ? "text-foreground hover:text-primary"
-                  : "text-white hover:text-yellow-300"
-              }
+              className="text-white hover:text-yellow-300 dark:text-foreground dark:hover:text-primary transition-colors"
               aria-label={
                 isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
               }
@@ -182,11 +160,7 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className={
-                isDark
-                  ? "md:hidden text-foreground hover:text-primary"
-                  : "md:hidden text-white hover:text-yellow-300"
-              }
+              className="md:hidden text-white hover:text-yellow-300 dark:text-foreground dark:hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen((open) => !open)}
               aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
               aria-expanded={mobileMenuOpen}
@@ -210,66 +184,42 @@ export function Header() {
       {mobileMenuOpen && (
         <div
           id="mobile-menu"
-          className={
-            isDark
-              ? "md:hidden border-t border-border bg-background"
-              : "md:hidden border-t border-border bg-[#009540] text-white"
-          }
+          className="md:hidden border-t border-border bg-[#009540] text-white dark:bg-background dark:text-foreground transition-colors"
           role="navigation"
           aria-label="Navegación móvil"
         >
           <nav className="container mx-auto flex flex-col gap-2 p-4">
             <Link
               href="/"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
               Inicio
             </Link>
             <Link
               href="/tramites"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
               Trámites y Servicios
             </Link>
             <Link
               href="/pqrsdf"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
               Radicar PQRSDF
             </Link>
             <Link
               href="/#paco"
-              className={
-                isDark
-                  ? "text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 rounded px-2 py-1"
-              }
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
               Puntos PACO
             </Link>
             <Link
               href="/auth/login"
-              className={
-                isDark
-                  ? "flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded px-2 py-1"
-                  : "flex items-center gap-2 text-sm font-medium text-white hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 rounded px-2 py-1"
-              }
+              className="flex items-center gap-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
               <LogIn className="h-4 w-4" aria-hidden="true" />

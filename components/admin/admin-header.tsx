@@ -43,13 +43,22 @@ export function AdminHeader({ user }: AdminHeaderProps) {
           </Button>
 
           <Link href="/admin">
-            <Image
-              src={theme === 'dark' ? '/dark-logo-chia.png' : '/ligth-logo.png'}
-              alt="Logo Chía"
-              height={40}
-              width={120}
-              className="h-8 w-auto sm:h-10"
-            />
+            <div className="relative">
+              <Image
+                src="/light-logo.png"
+                alt="Logo Chía"
+                height={40}
+                width={120}
+                className="h-8 w-auto sm:h-10 block dark:hidden"
+              />
+              <Image
+                src="/dark-logo-chia.png"
+                alt="Logo Chía"
+                height={40}
+                width={120}
+                className="h-8 w-auto sm:h-10 hidden dark:block"
+              />
+            </div>
           </Link>
         </div>
 
