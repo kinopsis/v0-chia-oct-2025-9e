@@ -82,77 +82,79 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
       </div>
 
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Fecha</TableHead>
-              <TableHead>Usuario</TableHead>
-              <TableHead>Acción</TableHead>
-              <TableHead>Tabla</TableHead>
-              <TableHead>ID Registro</TableHead>
-              <TableHead className="text-right">Detalles</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {paginatedLogs.map((log) => (
-              <TableRow key={log.id}>
-                <TableCell className="text-sm">{formatDate(log.created_at)}</TableCell>
-                <TableCell className="text-sm font-medium">{log.user_email || 'Sistema'}</TableCell>
-                <TableCell>
-                  <Badge variant={getActionBadgeVariant(log.action)}>{log.action}</Badge>
-                </TableCell>
-                <TableCell className="text-sm">{log.table_name}</TableCell>
-                <TableCell className="text-sm text-gray-600 dark:text-gray-400">{log.record_id || "-"}</TableCell>
-                <TableCell className="text-right">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>Detalles del Log #{log.id}</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Usuario:</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{log.user_email || 'Sistema'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Acción:</p>
-                          <Badge variant={getActionBadgeVariant(log.action)}>{log.action}</Badge>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Fecha:</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{formatDate(log.created_at)}</p>
-                        </div>
-                        {log.old_data && (
-                          <div>
-                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                              Datos Anteriores:
-                            </p>
-                            <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded overflow-x-auto">
-                              {JSON.stringify(log.old_data, null, 2)}
-                            </pre>
-                          </div>
-                        )}
-                        {log.new_data && (
-                          <div>
-                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Datos Nuevos:</p>
-                            <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded overflow-x-auto">
-                              {JSON.stringify(log.new_data, null, 2)}
-                            </pre>
-                          </div>
-                        )}
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Fecha</TableHead>
+                <TableHead>Usuario</TableHead>
+                <TableHead>Acción</TableHead>
+                <TableHead>Tabla</TableHead>
+                <TableHead>ID Registro</TableHead>
+                <TableHead className="text-right">Detalles</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {paginatedLogs.map((log) => (
+                <TableRow key={log.id}>
+                  <TableCell className="text-sm">{formatDate(log.created_at)}</TableCell>
+                  <TableCell className="text-sm font-medium">{log.user_email || 'Sistema'}</TableCell>
+                  <TableCell>
+                    <Badge variant={getActionBadgeVariant(log.action)}>{log.action}</Badge>
+                  </TableCell>
+                  <TableCell className="text-sm">{log.table_name}</TableCell>
+                  <TableCell className="text-sm text-gray-600 dark:text-gray-400">{log.record_id || "-"}</TableCell>
+                  <TableCell className="text-right">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>Detalles del Log #{log.id}</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div>
+                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Usuario:</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">{log.user_email || 'Sistema'}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Acción:</p>
+                            <Badge variant={getActionBadgeVariant(log.action)}>{log.action}</Badge>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Fecha:</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">{formatDate(log.created_at)}</p>
+                          </div>
+                          {log.old_data && (
+                            <div>
+                              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Datos Anteriores:
+                              </p>
+                              <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded overflow-x-auto">
+                                {JSON.stringify(log.old_data, null, 2)}
+                              </pre>
+                            </div>
+                          )}
+                          {log.new_data && (
+                            <div>
+                              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Datos Nuevos:</p>
+                              <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded overflow-x-auto">
+                                {JSON.stringify(log.new_data, null, 2)}
+                              </pre>
+                            </div>
+                          )}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
       {totalPages > 1 && (

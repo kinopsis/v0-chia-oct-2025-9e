@@ -97,63 +97,65 @@ export function UsersTable({ users }: UsersTableProps) {
       </div>
 
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nombre</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Rol</TableHead>
-              <TableHead>Dependencia</TableHead>
-              <TableHead>Estado</TableHead>
-              <TableHead className="text-right">Acciones</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredUsers.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-medium">{user.full_name || "Sin nombre"}</TableCell>
-                <TableCell className="text-sm text-gray-600 dark:text-gray-400">{user.email}</TableCell>
-                <TableCell>
-                  <Badge variant={getRoleBadgeVariant(user.role)} className="capitalize">
-                    {user.role}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-sm">{user.dependencia || "-"}</TableCell>
-                <TableCell>
-                  <Badge variant={user.is_active ? "default" : "secondary"}>
-                    {user.is_active ? "Activo" : "Inactivo"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => toggleActive(user.id, user.is_active)}
-                      title={user.is_active ? "Desactivar" : "Activar"}
-                    >
-                      {user.is_active ? <UserX className="h-4 w-4" /> : <UserCheck className="h-4 w-4" />}
-                    </Button>
-                    <Link href={`/admin/usuarios/${user.id}/editar`}>
-                      <Button variant="ghost" size="icon" title="Editar">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => deleteUser(user.id)}
-                      title="Eliminar"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nombre</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Rol</TableHead>
+                <TableHead>Dependencia</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead className="text-right">Acciones</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell className="font-medium">{user.full_name || "Sin nombre"}</TableCell>
+                  <TableCell className="text-sm text-gray-600 dark:text-gray-400">{user.email}</TableCell>
+                  <TableCell>
+                    <Badge variant={getRoleBadgeVariant(user.role)} className="capitalize">
+                      {user.role}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-sm">{user.dependencia || "-"}</TableCell>
+                  <TableCell>
+                    <Badge variant={user.is_active ? "default" : "secondary"}>
+                      {user.is_active ? "Activo" : "Inactivo"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleActive(user.id, user.is_active)}
+                        title={user.is_active ? "Desactivar" : "Activar"}
+                      >
+                        {user.is_active ? <UserX className="h-4 w-4" /> : <UserCheck className="h-4 w-4" />}
+                      </Button>
+                      <Link href={`/admin/usuarios/${user.id}/editar`}>
+                        <Button variant="ghost" size="icon" title="Editar">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => deleteUser(user.id)}
+                        title="Eliminar"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   )

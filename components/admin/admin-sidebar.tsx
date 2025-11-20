@@ -11,7 +11,7 @@ interface AdminSidebarProps {
   user: any
 }
 
-const navigation = [
+export const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Trámites", href: "/admin/tramites", icon: FileText },
   { name: "Dependencias", href: "/admin/dependencias", icon: Building2 },
@@ -31,7 +31,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
     <>
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300",
+          "fixed inset-y-0 left-0 z-50 flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 hidden lg:flex",
           collapsed ? "w-16" : "w-64",
         )}
       >

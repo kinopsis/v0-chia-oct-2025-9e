@@ -39,7 +39,7 @@ export default async function ConfiguracionPage() {
           <CardDescription>Detalles técnicos y estado del portal</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Versión</p>
               <p className="text-sm text-gray-600 dark:text-gray-400">1.0.0</p>

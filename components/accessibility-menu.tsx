@@ -9,8 +9,15 @@ import { Label } from "@/components/ui/label"
 type TextSize = "normal" | "large" | "xlarge"
 type ContrastMode = "normal" | "high"
 
-export function AccessibilityMenu() {
-  const [isOpen, setIsOpen] = useState(false)
+export function AccessibilityMenu({
+  isOpen,
+  onClose,
+  triggerRef,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  triggerRef: React.RefObject<HTMLButtonElement | null>
+}) {
   const [textSize, setTextSize] = useState<TextSize>("normal")
   const [contrastMode, setContrastMode] = useState<ContrastMode>("normal")
   const panelRef = useRef<HTMLDivElement>(null)
@@ -67,25 +74,24 @@ export function AccessibilityMenu() {
     localStorage.removeItem("accessibility-contrast")
   }
 
-  // Escucha global para abrir/cerrar el panel desde el ícono fijo del header
+  // Close on escape key press
   useEffect(() => {
-    const handleToggle = () => {
-      setIsOpen((prev) => !prev)
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose()
+      }
     }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [onClose])
 
-    document.addEventListener("toggle-accessibility-menu", handleToggle)
-
-    return () => {
-      document.removeEventListener("toggle-accessibility-menu", handleToggle)
-    }
-  }, [])
-
+  // Close on click outside
   useEffect(() => {
     if (!isOpen) return
 
     const handleClickOutside = (event: MouseEvent) => {
       if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+        onClose()
       }
     }
 
@@ -97,42 +103,82 @@ export function AccessibilityMenu() {
       clearTimeout(timeoutId)
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [isOpen])
+  }, [isOpen, onClose])
+
+  // Focus trap and management
+  useEffect(() => {
+    if (!isOpen) return
+
+    const focusableElements = panelRef.current?.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    if (!focusableElements || focusableElements.length === 0) return
+
+    const firstElement = focusableElements[0]
+    const lastElement = focusableElements[focusableElements.length - 1]
+
+    // Set initial focus
+    firstElement.focus()
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return
+
+      if (event.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          lastElement.focus()
+          event.preventDefault()
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          firstElement.focus()
+          event.preventDefault()
+        }
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+      // Restore focus to the trigger button
+      triggerRef.current?.focus()
+    }
+  }, [isOpen, triggerRef])
+
+  if (!isOpen) {
+    return null
+  }
 
   return (
-    <>
-      {/* Header-integrated trigger:
-          - El botón flotante fue eliminado.
-          - La apertura/cierre del panel ahora se controla exclusivamente
-            mediante el ícono fijo en el header usando el evento 'toggle-accessibility-menu'. */}
-      {/* Accessibility Panel */}
-      {isOpen && (
-        <Card
-          ref={panelRef}
-          className="fixed bottom-24 right-6 w-[90vw] sm:w-80 shadow-2xl z-40 border-2"
-          role="dialog"
-          aria-label="Menú de accesibilidad"
-          aria-modal="true"
-        >
-          <CardHeader className="border-b">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Accessibility className="h-5 w-5" aria-hidden="true" />
-                  Accesibilidad
-                </CardTitle>
-                <CardDescription className="text-xs">Ajusta la visualización del sitio</CardDescription>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                aria-label="Cerrar menú de accesibilidad"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-          </CardHeader>
+    <Card
+      ref={panelRef}
+      id="accessibility-menu"
+      className="absolute top-full right-0 mt-2 w-[90vw] sm:w-80 shadow-2xl z-50 border-2 bg-background"
+      role="dialog"
+      aria-label="Menú de accesibilidad"
+      aria-modal="true"
+    >
+      <CardHeader className="border-b">
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Accessibility className="h-5 w-5" aria-hidden="true" />
+              Accesibilidad
+            </CardTitle>
+            <CardDescription className="text-xs">Ajusta la visualización del sitio</CardDescription>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            aria-label="Cerrar menú de accesibilidad"
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
+      </CardHeader>
 
           <CardContent className="p-4 space-y-6">
             {/* Text Size Control */}
@@ -209,7 +255,5 @@ export function AccessibilityMenu() {
             </p>
           </CardContent>
         </Card>
-      )}
-    </>
   )
 }
