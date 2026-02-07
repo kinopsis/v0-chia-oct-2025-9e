@@ -6,7 +6,6 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '1mb',
     },
-    optimizeCss: true,
     optimizePackageImports: [
       '@radix-ui/react-accordion',
       '@radix-ui/react-alert-dialog',
@@ -20,7 +19,7 @@ const nextConfig = {
       'date-fns',
     ],
   },
-  
+
   // Security headers
   async headers() {
     return [
@@ -37,11 +36,19 @@ const nextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            value: 'strict-origin-when-cross-origin',
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vg-bunny-cdn.b-cdn.net; style-src 'self' 'unsafe-inline' https://vg-bunny-cdn.b-cdn.net https://fonts.googleapis.com; img-src 'self' blob: data: https:; font-src 'self' data: https://vg-bunny-cdn.b-cdn.net https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://va.vercel-scripts.com https://vg-bunny-cdn.b-cdn.net https://na-cloudflare.vg-stuff.com https://eu-gcp-api.vg-stuff.com https://na-gcp-api.vg-stuff.com wss://na-gcp-api.vg-stuff.com https://firestore.googleapis.com https://voiceglow.org https://*.r2.dev; media-src 'self' https://*.r2.dev; worker-src 'self' blob:; frame-ancestors 'none';",
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload',
           },
         ],
       },
@@ -50,7 +57,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: '*',
+            value: process.env.NEXT_PUBLIC_APP_URL || 'https://portal-chia.gov.co',
           },
           {
             key: 'Access-Control-Allow-Methods',
@@ -59,6 +66,10 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Headers',
             value: 'Content-Type, Authorization',
+          },
+          {
+            key: 'Access-Control-Allow-Credentials',
+            value: 'true',
           },
         ],
       },

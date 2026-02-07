@@ -9,7 +9,6 @@
 @font-face {
   font-family: "Futura Light";
   src:
-    url("/fonts/Futura-Light.woff2") format("woff2"),
     url("/fonts/Futura light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
@@ -19,7 +18,6 @@
 @font-face {
   font-family: "Futura Md BT";
   src:
-    url("/fonts/Futura-Md-BT.woff2") format("woff2"),
     url("/fonts/Futura Md BT Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
@@ -29,7 +27,6 @@
 @font-face {
   font-family: "Futura Bold";
   src:
-    url("/fonts/Futura-Bold.woff2") format("woff2"),
     url("/fonts/Futura Md BT Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;

@@ -59,7 +59,7 @@ export default function LoginPage() {
                 width={192}
                 height={72}
                 priority
-                className="block dark:hidden h-auto w-auto object-contain"
+                className="block dark:hidden h-auto w-auto object-contain mix-blend-multiply"
               />
               {/* Logo for dark background (dark theme) */}
               <Image
@@ -68,7 +68,7 @@ export default function LoginPage() {
                 width={192}
                 height={72}
                 priority
-                className="hidden dark:block h-auto w-auto object-contain"
+                className="hidden dark:block h-auto w-auto object-contain dark:mix-blend-plus-lighter"
               />
             </div>
             <div className="text-center">
