@@ -1,0 +1,57 @@
+﻿CODIGO SUBDEPENDENCIA,SIGLA,Subdependencia,Dependencias,CODIGO DEPENDENCIA
+000,DA,Directo,Despacho Alcalde,000
+001,OAJ,Oficina Asesora Jurídica,Despacho Alcalde,
+002,OC,Oficina de Contratación,Despacho Alcalde,
+003,ODJ,Oficina Defensa Judicial,Despacho Alcalde,
+004,OCI,Oficina de Control Interno,Despacho Alcalde,
+005,OTIC,Oficina de tecnologías de la información y las comunicaciones TICS,Despacho Alcalde,
+006,OACPP,Oficina Asesora de comunicación Prensa y Protocolo,Despacho Alcalde,
+010,SP,Directo,Secretaría de Planeación,010
+011,OSIE,Dirección Sistemas de la Información y Estadísticas,Secretaría de Planeación,
+012,DPD,Dirección de Planificación del Desarrollo,Secretaría de Planeación,
+013,DOTP,Dirección de Ordenamiento Territorial y Plusvalía,Secretaría de Planeación,
+014,DU,Dirección de Urbanismo,Secretaría de Planeación,
+015,DSP,Dirección de Servicios Públicos,Secretaría de Planeación,
+030,SG,Directo,Secretaría de Gobierno,030
+031,DSCC,Dirección de Seguridad y Convivencia Ciudadana,Secretaría de Gobierno,
+032,DAERRP,Dirección de Asuntos Étnicos Raciales Religiosos y Posconflicto,Secretaría de Gobierno,
+033,DDRC,Dirección de Derechos y Resolución de Conflictos,Secretaría de Gobierno,
+040,SH,Directo,Secretaría de Hacienda,040
+041,DR,Dirección de Rentas,Secretaría de Hacienda,
+042,DF,Dirección Financiera,Secretaría de Hacienda,
+043,DT,Dirección de Tesorería,Secretaría de Hacienda,
+050,SOP,Directo,Secretaría de Obras Públicas,050
+051,DI,Dirección de Infraestructura,Secretaría de Obras Públicas,
+052,DPED,"Dirección de Programación, Estudios y Diseños",Secretaría de Obras Públicas,
+053,DV,Dirección de Valorización,Secretaría de Obras Públicas,
+060,SDS,Directo,Secretaría de Desarrollo Social,060
+061,DCJ,Dirección de Ciudadanía Juvenil,Secretaría de Desarrollo Social,
+062,DAS,Dirección de Acción Social,Secretaría de Desarrollo Social,
+063,DC,Dirección de Cultura,Secretaría de Desarrollo Social,
+080,SS,Directo,Secretaría de Salud,080
+081,DSP,Dirección de Salud Pública,Secretaría de Salud,
+082,DVC,Dirección de Vigilancia y Control,Secretaría de Salud,
+090,SDE,Directo,Secretaría para el Desarrollo Económico,090
+091,DDAE,Dirección de Desarrollo Agropecuario y Empresarial,Secretaría para el Desarrollo Económico,
+092,DT,Dirección de Turismo,Secretaría para el Desarrollo Económico,
+100,SMA,Forestal,Secretaría de Medio Ambiente,
+110,SM,Directo,Secretaría de Movilidad,110
+111,DSMGT,Dirección de Servicios de Movilidad y Gestión del Transporte,Secretaría de Movilidad,
+112,DESVCT,"Dirección de Educación, Seguridad Vial y Control de Tránsito",Secretaría de Movilidad,
+113,UTCCH,Unión Temporal Circulemos Chía,Secretaría de Movilidad,
+120,SPCAC,Directo,Secretaría de Participación Ciudadana y Acción Comunitaria,120
+201,,IDUVI,Descentralizados,
+202,,IMRD,Descentralizados,
+203,,EMSERCHIA,Descentralizados,
+204,,PERSONERÍA,Descentralizados,
+212,,AGUSTÍN CODAZZI,Descentralizados,
+214,,CUERPO DE BOMBEROS CHÍA,Descentralizados,
+215,,DEFENSA CIVIL COLOMBIANA,Descentralizados,
+020,SG,Directo,Secretaría General,020
+021,DFP,Dirección de Función Pública,Secretaría General,
+022,DSA,Dirección de Servicios Administrativos,Secretaría General,
+024,DCID,Dirección de Control Interno Disciplinario,Secretaría General,
+070,SE,Directo,Secretaría de Educación,070
+071,DIV,Dirección de Inspección y Vigilancia,Secretaría de Educación,
+072,DGFE,Dirección de Gestión y Fomento a la Educación,Secretaría de Educación,
+073,DAF,Dirección Administrativa y Financiera,Secretaría de Educación,
