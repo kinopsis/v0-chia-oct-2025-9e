@@ -1,5 +1,5 @@
 import { Header } from "@/components/header"
-import { ConvocoreWidget } from "@/components/convocore-widget"
+import { ChatWidget } from "@/components/chat-widget"
 
 export default function PublicLayout({
   children,
@@ -10,7 +10,7 @@ export default function PublicLayout({
     <>
       <Header />
       {children}
-      <ConvocoreWidget />
+      <ChatWidget />
     </>
   )
 }

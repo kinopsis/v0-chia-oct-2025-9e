@@ -49,14 +49,14 @@ export function AdminHeader({ user }: AdminHeaderProps) {
                 alt="Logo Chía"
                 height={40}
                 width={120}
-                className="h-8 w-auto sm:h-10 block dark:hidden"
+                className="h-8 w-auto sm:h-10 block dark:hidden mix-blend-multiply"
               />
               <Image
                 src="/dark-logo-chia.png"
                 alt="Logo Chía"
                 height={40}
                 width={120}
-                className="h-8 w-auto sm:h-10 hidden dark:block"
+                className="h-8 w-auto sm:h-10 hidden dark:block dark:mix-blend-plus-lighter"
               />
             </div>
           </Link>

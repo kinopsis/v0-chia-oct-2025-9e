@@ -1,11 +1,9 @@
-"use client"
 import Link from "next/link"
-import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Footer } from "@/components/footer"
-import { AccessibilityMenu } from "@/components/accessibility-menu"
+import { AccessibilityWrapper } from "@/components/accessibility-wrapper"
 import {
   Building2,
   DollarSign,
@@ -21,9 +19,6 @@ import {
 } from "lucide-react"
 
 export default function Page() {
-  const [isAccessibilityMenuOpen, setAccessibilityMenuOpen] = useState(false)
-  const triggerRef = useRef(null)
-
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
@@ -314,11 +309,7 @@ export default function Page() {
       </main>
 
       <Footer />
-      <AccessibilityMenu
-        isOpen={isAccessibilityMenuOpen}
-        onClose={() => setAccessibilityMenuOpen(false)}
-        triggerRef={triggerRef}
-      />
+      <AccessibilityWrapper />
     </div>
   )
 }

@@ -56,7 +56,7 @@ export function Header() {
                 width={600}
                 height={140}
                 priority
-                className="h-16 w-auto object-contain md:h-20 lg:h-24 max-w-full block dark:hidden"
+                className="h-16 w-auto object-contain md:h-20 lg:h-24 max-w-full block dark:hidden mix-blend-multiply"
               />
               <Image
                 src="/dark-logo-chia.png"
@@ -64,7 +64,7 @@ export function Header() {
                 width={600}
                 height={140}
                 priority
-                className="h-16 w-auto object-contain md:h-20 lg:h-24 max-w-full hidden dark:block"
+                className="h-16 w-auto object-contain md:h-20 lg:h-24 max-w-full hidden dark:block dark:mix-blend-plus-lighter"
               />
             </div>
           </Link>
