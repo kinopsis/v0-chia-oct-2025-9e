@@ -55,7 +55,7 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
-                <span className="text-sm text-muted-foreground">Carrera 9 # 11-75, Chía, Cundinamarca</span>
+                <span className="text-sm text-muted-foreground">Carrera 9 # 11-24, Chía, Cundinamarca</span>
               </li>
             </ul>
           </div>
@@ -67,7 +67,7 @@ export function Footer() {
               <Clock className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
               <div className="text-sm text-muted-foreground">
                 <p>Lunes a Viernes</p>
-                <p className="font-medium">8:00 AM - 5:00 PM</p>
+                <p className="font-medium">8:00 AM - 4:30 PM</p>
               </div>
             </div>
           </div>
