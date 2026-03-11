@@ -61,7 +61,7 @@ export default function Page() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="max-w-md mx-auto">
               {/* PACO Centro */}
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
@@ -76,49 +76,14 @@ export default function Page() {
                     <MapPin className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Dirección</p>
-                      <p className="text-sm text-muted-foreground">Carrera 9 # 11-75, Centro, Chía</p>
+                      <p className="text-sm text-muted-foreground">Carrera 9 # 11-24, Centro, Chía</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Horario</p>
-                      <p className="text-sm text-muted-foreground">Lunes a Viernes: 8:00 AM - 5:00 PM</p>
-                      <p className="text-sm text-muted-foreground">Sábados: 9:00 AM - 1:00 PM</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Phone className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Teléfono</p>
-                      <p className="text-sm text-muted-foreground">+57 601 8844444</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* PACO Norte */}
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-primary" />
-                    PACO Norte
-                  </CardTitle>
-                  <CardDescription>Punto de Atención Auxiliar</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Dirección</p>
-                      <p className="text-sm text-muted-foreground">Calle 15 # 8-45, Sector Norte, Chía</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Horario</p>
-                      <p className="text-sm text-muted-foreground">Lunes a Viernes: 8:00 AM - 4:00 PM</p>
+                      <p className="text-sm text-muted-foreground">Lunes a Viernes: 8:00 AM - 4:30 PM</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -269,7 +234,7 @@ export default function Page() {
 
               <Card className="text-center">
                 <CardHeader>
-                  <CardTitle className="text-4xl font-bold text-primary">2</CardTitle>
+                  <CardTitle className="text-4xl font-bold text-primary">1</CardTitle>
                   <CardDescription className="text-base">Puntos de Atención PACO</CardDescription>
                 </CardHeader>
               </Card>
