@@ -1,6 +1,7 @@
-"use server"
-
 import { createClient } from "@/lib/supabase/server"
+
+// NOTA: "use server" removido - este archivo exporta tanto utilidades como constantes
+// Las funciones logAudit y withAudit deben llamarse desde contextos "use server"
 
 export interface AuditLogData {
   action: string
