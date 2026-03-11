@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { createSafeErrorResponse } from "@/lib/error-handler"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -327,23 +328,16 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   } catch (error: any) {
     console.error("Error en PUT /api/admin/tramites/[id]:", error)
     
-    // Manejo específico de errores comunes
-    if (error.code === '22P02') { // Invalid text representation
-      return NextResponse.json({
-        error: "Formato de datos inválido"
-      }, { status: 400 })
-    }
-
-    if (error.code === '23503') { // Foreign key violation
-      return NextResponse.json({
-        error: "Dependencia o subdependencia no válida"
-      }, { status: 400 })
-    }
-
-    return NextResponse.json({
-      error: "Error interno del servidor",
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
-    }, { status: 500 })
+    // Manejo seguro de errores - OWASP A05:2021
+    const safeError = createSafeErrorResponse(error, {
+      production: process.env.NODE_ENV === 'production',
+      customMessages: {
+        '22P02': 'Formato de datos inválido. Verifique la información proporcionada',
+        '23503': 'Dependencia o subdependencia no válida'
+      }
+    })
+    
+    return NextResponse.json(safeError, { status: safeError.status || 500 })
   }
 }
 

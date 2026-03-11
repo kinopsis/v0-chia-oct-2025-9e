@@ -40,7 +40,7 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=()',
           },
           {
             key: 'Content-Security-Policy',
@@ -50,6 +50,20 @@ const nextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload',
           },
+          // NOTA: Cross-Origin headers deshabilitados temporalmente por compatibilidad con VoiceGlow
+          // Se pueden habilitar cuando VoiceGlow soporte CORP/CORS apropiadamente
+          // {
+          //   key: 'Cross-Origin-Embedder-Policy',
+          //   value: 'require-corp',
+          // },
+          // {
+          //   key: 'Cross-Origin-Opener-Policy',
+          //   value: 'same-origin-allow-popups',
+          // },
+          // {
+          //   key: 'Cross-Origin-Resource-Policy',
+          //   value: 'same-origin',
+          // },
         ],
       },
       {

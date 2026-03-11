@@ -3,6 +3,30 @@ import { createClient } from "@/lib/supabase/server";
 import { Dependencia, ApiResponse } from "@/lib/types-dependencias";
 import { NextRequest, NextResponse } from "next/server";
 
+/**
+ * Sanitiza campos CSV para prevenir CSV Injection y XSS
+ * OWASP: A03:2021 - Injection
+ */
+function sanitizeCSVField(field: string): string {
+  if (!field) return ''
+  
+  let sanitized = field.trim()
+  
+  // Remover fórmulas peligrosas de Excel (=CMD, +CMD, @CMD, -CMD)
+  // Esto previene ejecución de comandos cuando se abre el CSV
+  sanitized = sanitized.replace(/^[=+\-@]/g, '_')
+  
+  // Escapar caracteres HTML especiales para prevenir XSS
+  sanitized = sanitized
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+  
+  return sanitized
+}
+
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth();
@@ -75,7 +99,8 @@ export async function POST(request: NextRequest) {
       if (!line) continue; // Skip empty lines
 
       try {
-        const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        // Sanitizar cada campo del CSV para prevenir injection
+        const values = line.split(',').map(v => sanitizeCSVField(v.trim().replace(/^"|"$/g, '')));
         
         if (values.length < 5) {
           errors.push(`Línea ${i + 1}: Formato de fila inválido (se esperaban 5 columnas, se encontraron ${values.length})`);
@@ -156,9 +181,9 @@ export async function POST(request: NextRequest) {
         }
 
         dependenciasToInsert.push({
-          codigo,
-          sigla: sigla || null,
-          nombre,
+          codigo: sanitizeCSVField(codigo),
+          sigla: sigla ? sanitizeCSVField(sigla) : null,
+          nombre: sanitizeCSVField(nombre),
           tipo,
           dependencia_padre_id: dependenciaPadreId,
           orden: 0, // Will be set during insertion

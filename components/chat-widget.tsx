@@ -109,6 +109,8 @@ export function ChatWidget() {
             const script = document.createElement("script")
             script.src = "https://vg-bunny-cdn.b-cdn.net/vg_live_build/vg_bundle.js"
             script.defer = true
+            // NOTA: crossorigin removido - VoiceGlow CDN no soporta CORP/CORS completamente
+            // Se puede añadir cuando implementen headers apropiados
             document.body.appendChild(script)
         }
     }, [])
