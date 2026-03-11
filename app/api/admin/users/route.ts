@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"
+import { validatePassword } from "@/lib/auth"
+import { logAudit, extractIP, AuditActions } from "@/lib/audit-logger"
 import { NextResponse } from "next/server"
 
 export async function POST(request: Request) {
@@ -24,6 +26,15 @@ export async function POST(request: Request) {
 
         if (!email || !password || !role) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+        }
+
+        // Validar fortaleza de la contraseña (OWASP)
+        const passwordValidation = validatePassword(password)
+        if (!passwordValidation.valid) {
+            return NextResponse.json({ 
+                error: "Contraseña débil", 
+                details: passwordValidation.errors 
+            }, { status: 400 })
         }
 
         // Create user using service role
@@ -54,6 +65,22 @@ export async function POST(request: Request) {
         if (!newUser.user) {
             return NextResponse.json({ error: "Failed to create user" }, { status: 500 })
         }
+
+        // Log de creación de usuario exitosa
+        const ip = extractIP(request)
+        await logAudit({
+          action: AuditActions.USER_CREATE,
+          resource: 'users',
+          resourceId: newUser.user.id,
+          details: { 
+            email: newUser.user.email,
+            role,
+            full_name,
+            success: true 
+          },
+          ipAddress: ip,
+          userAgent: request.headers.get('user-agent') || 'unknown'
+        })
 
         // Update profile
         const { error: updateError } = await supabaseAdmin
