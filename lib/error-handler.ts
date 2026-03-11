@@ -105,7 +105,6 @@ export function createSafeErrorResponse(
     
     // Errores de validación
     '23502': 'Faltan campos requeridos',
-    '23503': 'Datos inválidos. Verifique la información',
     
     // Errores comunes
     'ECONNREFUSED': 'Servicio no disponible. Intente más tarde',
