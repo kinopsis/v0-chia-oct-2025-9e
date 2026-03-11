@@ -48,7 +48,7 @@ export async function signOut() {
  * Valida que una contraseña cumpla con los requisitos de seguridad
  * Basado en OWASP Authentication Cheat Sheet
  */
-export function validatePassword(password: string): { valid: boolean; errors: string[] } {
+export async function validatePassword(password: string): Promise<{ valid: boolean; errors: string[] }> {
   const errors: string[] = []
   
   // Longitud mínima de 12 caracteres (OWASP recommendation)

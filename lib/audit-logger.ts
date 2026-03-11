@@ -65,7 +65,7 @@ function sanitizeForLogging(data: Record<string, any>): Record<string, any> {
 /**
  * Helper para obtener IP del request
  */
-export function extractIP(request: Request): string {
+export async function extractIP(request: Request): Promise<string> {
   const forwarded = request.headers.get("x-forwarded-for")
   if (forwarded) {
     return forwarded.split(",")[0].trim()
@@ -84,7 +84,7 @@ export async function withAudit<T>(
   fn: () => Promise<T>,
   request: Request
 ): Promise<T> {
-  const ip = extractIP(request)
+  const ip = await extractIP(request)
   const userAgent = request.headers.get("user-agent") || "unknown"
   
   try {

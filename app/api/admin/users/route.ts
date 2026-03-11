@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         }
 
         // Validar fortaleza de la contraseña (OWASP)
-        const passwordValidation = validatePassword(password)
+        const passwordValidation = await validatePassword(password)
         if (!passwordValidation.valid) {
             return NextResponse.json({ 
                 error: "Contraseña débil", 
