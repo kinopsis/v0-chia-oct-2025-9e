@@ -67,7 +67,7 @@ export async function POST(request: Request) {
         }
 
         // Log de creación de usuario exitosa
-        const ip = extractIP(request)
+        const ip = await extractIP(request)
         await logAudit({
           action: AuditActions.USER_CREATE,
           resource: 'users',
