@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 
-import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 
 import "./globals.css"
@@ -17,7 +16,9 @@ export const metadata: Metadata = {
   title: "Portal Ciudadano - Municipio de Chía",
   description:
     "Portal de atención ciudadana del Municipio de Chía. Consulta trámites, servicios y puntos de atención PACO.",
-  generator: "v0.app",
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
@@ -31,7 +32,6 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   )
