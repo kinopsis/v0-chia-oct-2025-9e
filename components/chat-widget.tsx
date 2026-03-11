@@ -109,6 +109,11 @@ export function ChatWidget() {
             const script = document.createElement("script")
             script.src = "https://vg-bunny-cdn.b-cdn.net/vg_live_build/vg_bundle.js"
             script.defer = true
+            // IMPORTANTE: crossorigin anonymous para compatibilidad con COEP header
+            script.crossOrigin = "anonymous"
+            // Integrity hash para seguridad (SRI - Subresource Integrity)
+            // NOTA: Reemplazar con el hash real cuando se conozca
+            // script.integrity = "sha384-..."
             document.body.appendChild(script)
         }
     }, [])
