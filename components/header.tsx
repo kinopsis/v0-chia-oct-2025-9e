@@ -105,10 +105,10 @@ export function Header() {
               Radicar PQRSDF
             </Link>
             <Link
-              href="/#paco"
+              href="/#canales"
               className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
             >
-              Puntos PACO
+              Canales de Atención
             </Link>
           </nav>
 
@@ -211,11 +211,11 @@ export function Header() {
               Radicar PQRSDF
             </Link>
             <Link
-              href="/#paco"
+              href="/#canales"
               className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Puntos PACO
+              Canales de Atención
             </Link>
             <Link
               href="/auth/login"
