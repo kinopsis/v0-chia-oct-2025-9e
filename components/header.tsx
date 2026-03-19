@@ -236,6 +236,26 @@ export function Header() {
             >
               Canales de Atención
             </Link>
+            <a
+              href="https://chia-cundinamarca.gov.co/web/directorio-2/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center gap-1"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Directorio
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            </a>
+            <a
+              href="https://chia-cundinamarca.gov.co/web/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center gap-1"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Alcaldía de Chía
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            </a>
             <Link
               href="/auth/login"
               className="flex items-center gap-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
