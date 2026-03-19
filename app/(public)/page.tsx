@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -15,6 +16,9 @@ import {
   ArrowRight,
   Search,
   FileText,
+  Mail, // Added Mail
+  ExternalLink, // Added ExternalLink
+  Star, // Added Star
   CheckCircle2,
 } from "lucide-react"
 
@@ -23,30 +27,23 @@ export default function Page() {
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-primary/10 via-background to-accent/10 py-20 md:py-32">
-          <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-3xl text-center">
-              <Badge className="mb-4" variant="secondary">
-                Portal Oficial
-              </Badge>
-              <h1 className="mb-6 text-4xl font-bold tracking-tight text-balance md:text-5xl lg:text-6xl">
-                Bienvenido al Portal Ciudadano de Chía
+        <section className="relative">
+          <div className="relative h-[180px] md:h-[260px] flex items-center justify-center overflow-hidden">
+            <Image
+              src="/hero-chia.png"
+              alt="Panorámica de Chía"
+              fill
+              className="object-cover object-center"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative container mx-auto px-4 text-center">
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight drop-shadow-lg"
+                style={{ fontFamily: 'var(--font-futura-bold)' }}
+              >
+                Portal de atención ciudadana
               </h1>
-              <p className="mb-8 text-lg text-muted-foreground text-pretty md:text-xl">
-                Accede a más de 100 trámites y servicios municipales de forma rápida y sencilla. Estamos aquí para
-                servirte.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="text-base">
-                  <Link href="/tramites">
-                    Ver Trámites y Servicios
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="text-base bg-transparent">
-                  <Link href="#paco">Puntos de Atención PACO</Link>
-                </Button>
-              </div>
             </div>
           </div>
         </section>
