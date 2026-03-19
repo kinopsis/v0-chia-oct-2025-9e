@@ -24,8 +24,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#paco" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Puntos PACO
+                <Link href="/#canales" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Canales de Atención
                 </Link>
               </li>
               <li>
