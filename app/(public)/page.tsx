@@ -48,50 +48,67 @@ export default function Page() {
           </div>
         </section>
 
-        {/* PACO Locations Section */}
-        <section id="paco" className="py-16 md:py-24 bg-muted/30">
+        {/* Sección de Canales de Atención Rediseñada */}
+        <section id="canales" className="py-20 bg-gradient-to-b from-background to-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-balance">Puntos de Atención PACO</h2>
-              <p className="text-muted-foreground text-pretty max-w-2xl mx-auto">
-                Visítanos en nuestros puntos de atención presencial para recibir asesoría personalizada
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-futura-bold)' }}>Canales de Atención</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Estamos más cerca de ti. Elige el medio que mejor se adapte a tus necesidades para recibir atención personalizada.
               </p>
             </div>
 
-            <div className="max-w-md mx-auto">
-              {/* PACO Centro */}
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-primary" />
-                    PACO Centro
-                  </CardTitle>
-                  <CardDescription>Punto de Atención Principal</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Dirección</p>
-                      <p className="text-sm text-muted-foreground">Carrera 9 # 11-24, Centro, Chía</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Horario</p>
-                      <p className="text-sm text-muted-foreground">Lunes a Viernes: 8:00 AM - 4:30 PM</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Phone className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Teléfono</p>
-                      <p className="text-sm text-muted-foreground">+57 601 8844444</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="space-y-12 max-w-5xl mx-auto">
+              {/* Canales Presenciales */}
+              <div>
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-primary" style={{ fontFamily: 'var(--font-futura-medium)' }}>
+                  <div className="h-1 w-8 bg-primary rounded-full" />
+                  Canales Presenciales
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* PACO 1 */}
+                  <Card className="overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 group bg-white/50 backdrop-blur-sm">
+                    <CardContent className="p-0">
+                      <div className="flex items-center p-6 gap-5">
+                        <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#009540] to-[#00b34d] flex items-center justify-center shrink-0 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-300">
+                          <MapPin className="h-6 w-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-sm text-foreground mb-0.5" style={{ fontFamily: 'var(--font-futura-bold)' }}>PACO 1 — Alcaldía Chía</h4>
+                          <p className="text-xs text-muted-foreground mb-2">Carrera 9 # 11-24, Chía</p>
+                          <div className="flex items-center gap-3">
+                            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full">
+                              <Clock className="h-3 w-3" /> L-V 8:00 AM - 4:30 PM
+                            </span>
+                            <Badge variant="outline" className="text-[10px] font-medium border-primary/20 text-primary bg-primary/5">Punto Principal</Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* PACO 2 */}
+                  <Card className="overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 group bg-white/50 backdrop-blur-sm">
+                    <CardContent className="p-0">
+                      <div className="flex items-center p-6 gap-5">
+                        <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#009540] to-[#00b34d] flex items-center justify-center shrink-0 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-300">
+                          <MapPin className="h-6 w-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-sm text-foreground mb-0.5" style={{ fontFamily: 'var(--font-futura-bold)' }}>PACO 2 — C.C. Vivenza</h4>
+                          <p className="text-xs text-muted-foreground mb-2">Avenida Pradilla # 2-71 (Segundo Piso)</p>
+                          <div className="flex items-center gap-3">
+                            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full">
+                              <Clock className="h-3 w-3" /> L-V 8:30 AM - 4:40 PM
+                            </span>
+                            <Badge variant="outline" className="text-[10px] font-medium border-primary/20 text-primary bg-primary/5">Sede Norte</Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           </div>
         </section>
