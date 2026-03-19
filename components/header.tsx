@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useTheme } from "next-themes"
-import { Moon, Sun, Menu, LogIn, Accessibility } from "lucide-react"
+import { Moon, Sun, Menu, LogIn, Accessibility, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect, useRef } from "react"
 import { AccessibilityMenu } from "@/components/accessibility-menu"
@@ -110,6 +110,25 @@ export function Header() {
             >
               Canales de Atención
             </Link>
+
+            <a
+              href="https://chia-cundinamarca.gov.co/web/directorio-2/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center gap-1"
+            >
+              Directorio
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            </a>
+            <a
+              href="https://chia-cundinamarca.gov.co/web/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center gap-1"
+            >
+              Alcaldía de Chía
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            </a>
           </nav>
 
           {/* Contenedor de acciones unificado para desktop y mobile */}
