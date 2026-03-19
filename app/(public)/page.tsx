@@ -109,6 +109,63 @@ export default function Page() {
                   </Card>
                 </div>
               </div>
+
+              {/* Canales Virtuales y Telefónicos */}
+              <div>
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-primary" style={{ fontFamily: 'var(--font-futura-medium)' }}>
+                  <div className="h-1 w-8 bg-primary rounded-full" />
+                  Canales Virtuales y Telefónicos
+                </h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* Canal Telefónico */}
+                  <Card className="overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 group bg-white/50 backdrop-blur-sm">
+                    <CardContent className="p-0">
+                      <div className="flex flex-col items-center p-6 text-center">
+                        <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+                          <Phone className="h-6 w-6 text-white" />
+                        </div>
+                        <h4 className="font-bold text-sm text-foreground mb-1" style={{ fontFamily: 'var(--font-futura-bold)' }}>Canal Telefónico</h4>
+                        <p className="text-xs text-muted-foreground mb-3">+57 601 8844444</p>
+                        <Button variant="outline" size="sm" className="w-full text-xs font-semibold hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200" asChild>
+                          <a href="tel:+576018844444">Llamar Ahora</a>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* PQRSDF en Línea */}
+                  <Card className="overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 group bg-white/50 backdrop-blur-sm">
+                    <CardContent className="p-0">
+                      <div className="flex flex-col items-center p-6 text-center">
+                        <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center mb-4 shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform duration-300">
+                          <FileText className="h-6 w-6 text-white" />
+                        </div>
+                        <h4 className="font-bold text-sm text-foreground mb-1" style={{ fontFamily: 'var(--font-futura-bold)' }}>PQRSDF en Línea</h4>
+                        <p className="text-xs text-muted-foreground mb-3">Radica tu solicitud digitalmente</p>
+                        <Button variant="outline" size="sm" className="w-full text-xs font-semibold hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200" asChild>
+                          <Link href="/pqrsdf">Radicar Aquí</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Correo Electrónico */}
+                  <Card className="overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 group bg-white/50 backdrop-blur-sm">
+                    <CardContent className="p-0">
+                      <div className="flex flex-col items-center p-6 text-center">
+                        <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-red-500 to-rose-400 flex items-center justify-center mb-4 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform duration-300">
+                          <Mail className="h-6 w-6 text-white" />
+                        </div>
+                        <h4 className="font-bold text-sm text-foreground mb-1" style={{ fontFamily: 'var(--font-futura-bold)' }}>Correo Electrónico</h4>
+                        <p className="text-xs text-muted-foreground mb-3">contactenos@chia.gov.co</p>
+                        <Button variant="outline" size="sm" className="w-full text-xs font-semibold hover:bg-red-50 hover:text-red-600 hover:border-red-200" asChild>
+                          <a href="mailto:contactenos@chia.gov.co">Enviar Correo</a>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           </div>
         </section>
