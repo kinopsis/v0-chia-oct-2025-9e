@@ -228,6 +228,18 @@ export default function Page() {
                   </CardHeader>
                 </Card>
               </Link>
+
+              <a href="https://chia-cundinamarca.gov.co/web/2023/12/11-6-informes-direccion-centro-de-atencion-al-ciudadano/" target="_blank" rel="noopener noreferrer" className="block">
+                <Card className="hover:shadow-lg transition-shadow group cursor-pointer h-full">
+                  <CardHeader>
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                      <FileText className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg">Informes Trimestrales</CardTitle>
+                    <CardDescription>Informes de gestión y atención al ciudadano</CardDescription>
+                  </CardHeader>
+                </Card>
+              </a>
             </div>
           </div>
         </section>
