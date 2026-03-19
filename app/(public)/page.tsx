@@ -320,6 +320,28 @@ export default function Page() {
           </div>
         </section>
 
+        {/* Sección de Encuesta de Satisfacción */}
+        <section className="py-12 bg-[#009540]/10 border-y border-[#009540]/20">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 max-w-5xl mx-auto">
+              <div className="flex items-center gap-4 text-center md:text-left">
+                <div className="h-12 w-12 rounded-full bg-yellow-400 flex items-center justify-center shrink-0 shadow-sm">
+                  <Star className="h-6 w-6 text-[#009540]" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: 'var(--font-futura-bold)' }}>¿Cómo fue tu experiencia?</h3>
+                  <p className="text-sm text-muted-foreground">Tu opinión es fundamental para seguir mejorando nuestro portal de servicios.</p>
+                </div>
+              </div>
+              <Button asChild size="lg" className="bg-yellow-400 text-black hover:bg-yellow-500 font-bold border-none shadow-md whitespace-nowrap">
+                <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=2Lkf2Chp4kmNXOHhbrkfMazVw9IwrpZJjqTsW3PgErtURVk2V1JCVDkxTUY2RjhYOUtVWlU0NkoyRC4u&origin=QRCode" target="_blank" rel="noopener noreferrer">
+                  Responder Encuesta
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-16 md:py-24 bg-primary text-primary-foreground">
           <div className="container mx-auto px-4 text-center">
