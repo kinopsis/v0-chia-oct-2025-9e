@@ -88,25 +88,25 @@ export function Header() {
           >
             <Link
               href="/"
-              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center"
             >
               Inicio
             </Link>
             <Link
               href="/tramites"
-              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center"
             >
               Trámites y Servicios
             </Link>
             <Link
               href="/pqrsdf"
-              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center"
             >
               Radicar PQRSDF
             </Link>
             <Link
               href="/#canales"
-              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
+              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center"
             >
               Canales de Atención
             </Link>
@@ -236,11 +236,12 @@ export function Header() {
             >
               Canales de Atención
             </Link>
+
             <a
               href="https://chia-cundinamarca.gov.co/web/directorio-2/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center gap-1"
+              className="flex items-center gap-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
               Directorio
@@ -250,7 +251,7 @@ export function Header() {
               href="https://chia-cundinamarca.gov.co/web/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring inline-flex items-center gap-1"
+              className="flex items-center gap-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded px-2 py-1 text-white hover:text-yellow-300 focus-visible:ring-white dark:text-foreground dark:hover:text-primary dark:focus-visible:ring-ring"
               onClick={() => setMobileMenuOpen(false)}
             >
               Alcaldía de Chía
