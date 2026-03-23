@@ -74,7 +74,7 @@ export default function Page() {
           {/* Background image — compact */}
           <div className="relative h-[180px] md:h-[220px] lg:h-[260px]">
             <Image
-              src="/hero-chia.png"
+              src="/Cabezote paco3.jpg.jpeg"
               alt="Vista panorámica de Chía, Cundinamarca"
               fill
               priority
