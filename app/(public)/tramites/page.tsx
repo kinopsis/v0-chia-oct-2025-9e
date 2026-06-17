@@ -1,6 +1,6 @@
 import { Footer } from "@/components/footer"
 import { TramitesCatalog } from "@/components/tramites-catalog"
-import { fetchProceduresFromDB } from "@/lib/data"
+import { fetchProceduresFromDB } from "@/lib/data-server"
 
 export default async function Page({ searchParams }: { searchParams: { categoria?: string } }) {
   const procedures = await fetchProceduresFromDB()
