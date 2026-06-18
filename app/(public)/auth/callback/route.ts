@@ -20,7 +20,8 @@ export async function GET(request: Request) {
     
     // Log de intento sospechoso (si hay código de auditoría)
     try {
-      const { logAudit, AuditActions } = await import("@/lib/audit-logger")
+      const { logAudit } = await import("@/lib/audit-logger")
+      const { AuditActions } = await import("@/lib/audit-actions")
       await logAudit({
         action: AuditActions.UNAUTHORIZED_ACCESS,
         resource: 'auth',

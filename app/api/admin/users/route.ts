@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 import { validatePassword } from "@/lib/auth"
-import { logAudit, extractIP, AuditActions } from "@/lib/audit-logger"
+import { logAudit, extractIP } from "@/lib/audit-logger"
+import { AuditActions } from "@/lib/audit-actions"
 import { NextResponse } from "next/server"
 
 export async function POST(request: Request) {
