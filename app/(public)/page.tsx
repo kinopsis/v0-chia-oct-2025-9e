@@ -432,7 +432,7 @@ export default function Page() {
                 </div>
               </div>
               <a
-                href="https://forms.office.com/Pages/ResponsePage.aspx?id=2Lkf2Chp4kmNXOHhbrkfMazVw9IwrpZJjqTsW3PgErtURVk2V1JCVDkxTUY2RjhYOUtVWlU0NkoyRC4u&origin=QRCode"
+                href="https://forms.cloud.microsoft/r/48qpqD1den"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#ffdc00] text-[#004b25] font-bold text-sm hover:bg-yellow-300 transition-colors shadow-lg hover:shadow-xl flex-shrink-0"
