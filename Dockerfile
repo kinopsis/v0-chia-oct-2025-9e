@@ -7,7 +7,8 @@ WORKDIR /app
 
 # Copy lock files first for efficient caching
 COPY package.json package-lock.json* ./
-RUN npm ci
+# Use npm install instead of npm ci to tolerate incomplete lock files from CI/MCP pushes
+RUN npm install
 
 # =============================================================================
 # STAGE 2: Build Application
